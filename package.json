@@ -1,0 +1,24 @@
+{
+  "name": "d3_svelte_exercises",
+  "version": "1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@rollup/plugin-dsv": "^3.0.2",
+    "@sveltejs/vite-plugin-svelte": "^2.0.3",
+    "d3-array": "^3.2.4",
+    "d3-axis": "^3.0.0",
+    "d3-scale": "^4.0.2",
+    "d3-selection": "^3.0.0",
+    "d3-shape": "^3.2.0",
+    "d3-time-format": "^4.1.0",
+    "rollup": "^3.20.0",
+    "svelte": "^3.57.0",
+    "terser": "^5.16.6",
+    "vite": "^4.4.9"
+  }
+}
