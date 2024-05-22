@@ -1,15 +1,10 @@
 <script>
-  import Alamano from './components/session1.svelte'
+  import Charts from './components/charts.svelte'
 </script>
 
 <div class="page-column">
-  <h1>Random title to test</h1>
-  <Alamano />
+  <h1>On apprend à faire des charts avec svg, D3 et Svelte</h1>
+  <Charts />
 </div>
 
-<style>
-  .page-column {
-    margin: 0 auto;
-    width: 60ch; /* takes room of 60 characters */
-  }
-</style>
+

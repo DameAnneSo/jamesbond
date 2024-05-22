@@ -1,0 +1,160 @@
+:root {
+  /*
+=============== 
+Variables
+===============
+*/
+
+  /* Grayscale / Neutral Colors */
+  --color-white: #f9fafb;
+  --color-gray-50: #f3f4f6;
+  --color-gray-100: #e5e7eb;
+  --color-gray-200: #d1d5db;
+  --color-gray-400: #9ca3af;
+  --color-gray-500: #6b7280;
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+  --color-gray-900: #111827;
+  --color-black: #030712;
+  /* Primary / Accent Colors */
+  --color-main: #f5b301;
+  /* Light Pink Shades */
+  --color-main-dark: #ec9c04;
+  --color-main-light: #fed053;
+  /* warning colours */
+  /* --red-light: #f8d7da;
+  --red-dark: #842029;
+  --green-light: #d1e7dd;
+  --green-dark: #0f5132; */
+
+  /* fonts */
+  --ff-primary: 'Atma', sans-serif;
+  --ff-secondary: 'Verdana', sans-serif;
+
+  /* others */
+  --transition: all 0.3s linear;
+  --spacing: 0.1rem;
+  --radius: 0.5rem;
+  --light-shadow: 0 5px 15px rgba(22, 36, 64, 0.1);
+  --dark-shadow: 0 5px 15px rgba(22, 36, 64, 0.2);
+  --max-width: 1170px;
+}
+
+/*
+=============== 
+Global Styles
+===============
+*/
+
+*,
+::after,
+::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  background-color: var(--color-white);
+  font-family: var(--ff-secondary);
+  line-height: 1.5;
+}
+
+a {
+  text-decoration: none;
+  color: var(--color-gray-600);
+}
+
+a:hover {
+  color: var(--color-main);
+}
+
+img {
+  width: 100%;
+  display: block;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--ff-primary);
+  line-height: 1.75;
+  margin-bottom: 0.75rem;
+  color: var(--color-main);
+}
+
+p,
+small {
+  font-family: var(--ff-secondary);
+}
+
+h1 {
+  font-size: 1.5rem;
+}
+
+h2 {
+  font-size: 1.125rem;
+}
+
+h3 {
+  font-size: 1.125rem;
+}
+
+h4 {
+  font-size: 1.125rem;
+}
+
+h5 {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--clr-grey-9);
+}
+
+p {
+  margin-bottom: 1rem;
+  color: var(--clr-grey-7);
+  font-size: 0.9em;
+}
+
+@media screen and (min-width: 800px) {
+  h1 {
+    font-size: 2.125rem;
+  }
+
+  h2 {
+    font-size: 1.875rem;
+  }
+
+  h3 {
+    font-size: 1.15rem;
+  }
+
+  h4 {
+    font-size: 1.125rem;
+  }
+
+  body {
+    font-size: 1rem;
+  }
+}
+
+/*
+=============== 
+Specific Styles
+===============
+*/
+
+.page-column {
+  margin: 0 auto;
+  width: 60ch; /* takes room of 60 characters */
+}
