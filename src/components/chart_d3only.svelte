@@ -76,6 +76,7 @@ svg
   .call(
     axisBottom(x)
       .ticks(width / 80)
+      .tickFormat(utcFormat('%b'))
       .tickSizeOuter(0)
   )
 

@@ -57,8 +57,9 @@ select("#d3_Svelte_chart")
  .attr('transform', `translate(0,${height - marginBottom})`)
  .call(
    axisBottom(x)
-     .ticks(width / 80)
-     .tickSizeOuter(0)
+   .ticks(width / 80) // I dont understand how this works
+   .tickFormat(utcFormat('%b'))
+    //  .tickSizeOuter(0)
  )
 
 // Add the y-axis, remove the domain line, add grid lines and a label.
@@ -76,10 +77,11 @@ select("#d3_Svelte_chart")
  .call(g => g.append('text').attr('x', -marginLeft).attr('y', 10).attr('fill', 'currentColor').attr('text-anchor', 'start').text("↑ Mon niveau d'understanding de D3 en fonction du temps →"))
 }
 
-console.log(lineData)
+// console.log(lineData)
 // console.log(lineData[1])
 // console.log(x(lineData[1].date))
 // console.log(y(lineData[1].level))
+
 </script>
 
 <!-- new svg in d3 and Svelte -->
@@ -92,4 +94,6 @@ console.log(lineData)
   {/each}
 </svg>
 
-<!-- ajuster axe, comment changer le format - regarder scaleUTC and format pour formatter la date -->
+<!-- ajuster axe, comment changer le format - regarder scaleUTC and format pour formatter la date 
+DONE BUT Question on row 60
+also, the axes are above the chart and not the other way round?-->

@@ -1,7 +1,7 @@
 <script>
   import HardcodedSVG from './components/chart_hardcoded_svg.svelte'
-  import D3Pure from './components/chart_pure_d3.svelte'
-  import D3Svelte from './components/chart_svelte_d3.svelte'
+  import D3Pure from './components/chart_d3only.svelte'
+  import D3Svelte from './components/chart_svelte.svelte'
 
 </script>
 
