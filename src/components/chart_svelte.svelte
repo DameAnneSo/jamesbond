@@ -85,7 +85,7 @@ select("g.axisY")
 </script>
 
 <!-- new svg in d3 and Svelte -->
-<h2>Scatterplot built with d3 and Svelte</h2>
+
 <svg id='d3_Svelte_chart' width="60ch" viewbox="0 0 500 300">
   <rect x="0" y="0" height="100%" width="100%" fill="purple" opacity="0.2" />
   <g class="axisX"></g>
@@ -93,7 +93,7 @@ select("g.axisY")
   <!-- add marks -->
   <g style:opacity={opacityChange}>
   {#each lineData as datum}
-    <circle cx={x(datum.date)} cy={y(datum.level)} r="5" fill={colourDictionary[datum.type]}/>
+    <circle cx={x(datum.date)} cy={y(datum.level)} r="5" fill={colourDictionary[datum.type]} />
   {/each}
   </g>
 </svg>

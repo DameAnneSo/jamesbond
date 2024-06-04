@@ -108,13 +108,12 @@ svg
 // svg.append('path').attr('fill', 'none').attr('stroke', 'steelblue').attr('stroke-width', 1.5).attr('d', lineGenerator(lineData))
 }
 
-console.log(lineData)
-console.log(lineData[1])
-console.log(x(lineData[1].date))
-console.log(y(lineData[1].level))
-console.log(select("#d3_Svelte_chart"))
+// console.log(lineData)
+// console.log(lineData[1])
+// console.log(x(lineData[1].date))
+// console.log(y(lineData[1].level))
+// console.log(select("#d3_Svelte_chart"))
 </script>
 
 <!-- new svg in d3 -->
-<h2>Scatterplot built with d3</h2>
 <div id="scatterplot_in_d3" />

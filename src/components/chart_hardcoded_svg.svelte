@@ -24,7 +24,7 @@ const colourDictionary = {
 // Draw the chart
 const draw = () => {}
 </script>
-<h2>Scatterplot hardcoded in svg</h2>
+
 
 <!-- hard coded svg -->
 <svg width="60ch" viewbox="0 0 300 150">
