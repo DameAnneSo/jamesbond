@@ -34,10 +34,8 @@ $:console.log(selectedChart)
 </select>
 
 
-
-
   <!-- < class="page-column" style:opacity={opacity}> -->
-  <h1>Charts avec svg, D3 et Svelte</h1>
+  <h1>James Bond movies</h1>
   <!-- <h2>Scatterplot hardcoded in svg</h2>
   <HardcodedSVG />
   <h2>Scatterplot built with d3</h2>
@@ -62,11 +60,3 @@ $:console.log(selectedChart)
   {/if}
 
   </div>
-<!-- // drop down du chart a afficher  avec select binding 
-  READ 
-https://www.visualcinnamon.com/2015/11/learnings-from-a-d3-js-addict-on-starting-with-canvas/
-DO 
-https://svelte.dev/examples/select-bindings 
-DO MORE 
-tenter mettre mon chart Eurovision 
--->
