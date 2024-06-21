@@ -15,7 +15,7 @@ export let opacityChange = 1
 
 // Data processing
 const data007 = dataRaw.map(d => ({
-    index:+d.order,
+    index:+d.index,
     title:d.title,
     year:+d.year,
     production_company:d.production_company,
@@ -88,9 +88,9 @@ select("g.axisY")
  .call(g => g.append('text').attr('x', -marginLeft).attr('y', 10).attr('fill', 'currentColor').attr('text-anchor', 'start').text("↑ Mon niveau d'understanding de D3 en fonction du temps →"))
 }
 
-// console.log(dataRaw)
-// console.log(data007)
-// console.log(data007[1])
+console.log(dataRaw)
+console.log(data007)
+console.log(data007[1])
 </script>
 
 <!-- new svg in d3 and Svelte -->
@@ -111,14 +111,14 @@ select("g.axisY")
   </g>
 </svg>
 
-<!-- // drop down du chart a afficher  avec select binding 
- Question 1: why index:+d.order gives NaN? 
- Question 2: do you add tooltips to the circles in Svelte or via classic d3? 
+<!-- // drop down du chart a afficher  avec select binding  
 
- TO DO 
- how to add a legend to the chart in Svelte
- highlight a specific movie in the chart 
- make it mobile compatible
- work on css and formatting 
+TO DO 
+save the features of svelte pour usage plus tard
+tech: add tooltips to the circles in Svelte - see Connor's video
+tech: how to add a legend to the chart in Svelte
+tech: highlight a specific movie in the chart = condition avec class en plus, si id est this then class is that ; 
+on my own: make it mobile compatible
+on my own: work on css and formatting 
 
 -->
