@@ -85,7 +85,7 @@ select("g.axisY")
    .attr('x2', width - marginLeft - marginRight)
    .attr('stroke-opacity', 0.1)
  )
- .call(g => g.append('text').attr('x', -marginLeft).attr('y', 10).attr('fill', 'currentColor').attr('text-anchor', 'start').text("↑ Mon niveau d'understanding de D3 en fonction du temps →"))
+ .call(g => g.append('text').attr('x', -marginLeft).attr('y', 10).attr('fill', 'currentColor').attr('text-anchor', 'start').text("↑ Audience score ; → Critics score"))
 }
 
 console.log(dataRaw)
@@ -114,11 +114,12 @@ console.log(data007[1])
 <!-- // drop down du chart a afficher  avec select binding  
 
 TO DO 
-save the features of svelte pour usage plus tard
+save the svelte features for later
 tech: add tooltips to the circles in Svelte - see Connor's video
 tech: how to add a legend to the chart in Svelte
 tech: highlight a specific movie in the chart = condition avec class en plus, si id est this then class is that ; 
 on my own: make it mobile compatible
 on my own: work on css and formatting 
+on my own: improve the read me
 
 -->
