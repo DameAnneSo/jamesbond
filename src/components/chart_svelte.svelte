@@ -113,11 +113,11 @@ console.log(data007[1])
 <!--  
 
 TO DO 
-remove the svelte features
 tech: add tooltips to the circles in Svelte - see Connor's video
 drop down du chart a afficher  avec select binding 
 tech: how to automatically add a legend to the chart in Svelte
 tech: highlight a specific movie in the chart = condition avec class en plus, si id est this then class is that ; 
+add to Netlify
 on my own: make it mobile compatible
 on my own: work on css and formatting 
 -->
