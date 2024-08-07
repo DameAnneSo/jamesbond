@@ -158,3 +158,15 @@ Specific Styles
   margin: 0 auto;
   width: 60ch; /* takes room of 60 characters */
 }
+
+/*
+=============== 
+Chart
+===============
+*/
+
+/* select the rect inside the svg element */
+.chart_background {
+  fill: var(--color-main);
+  opacity: 0.2; 
+}

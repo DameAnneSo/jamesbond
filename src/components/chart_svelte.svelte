@@ -1,17 +1,13 @@
 <script>
 // Import the packages from d3
-import { scaleUtc, scaleLinear } from 'd3-scale'
 import { extent, max } from 'd3-array'
-import { line } from 'd3-shape'
+import { scaleUtc, scaleLinear, scaleSqrt } from 'd3-scale'
 import { select } from 'd3-selection'
 import { axisBottom, axisLeft } from 'd3-axis'
-// import { timeParse,utcFormat, utcParse } from 'd3-time-format'
 import dataRaw from '../data/007_data.csv'
 
 import { onMount } from 'svelte'
 onMount(() => {draw()})
-
-export let opacityChange = 1
 
 // Data processing
 const data007 = dataRaw.map(d => ({
@@ -36,55 +32,57 @@ const data007 = dataRaw.map(d => ({
     spotify_rating:+d.spotify_rating
   }))
 
-const colourDictionary = {
-    typeA: 'blue',
-    typeB: 'red',
-    typeC: 'green'
-  }
 
 // Set the dimensions and margins of the graph
-const width = 500
-const height = 500
+let width
+$: height = width
 const marginTop = 30
 const marginRight = 30
 const marginBottom = 30
 const marginLeft = 30
 
 // Declare the x (vertical position) scale
-const x = scaleLinear(
+$: x = scaleLinear(
     // extent(data007, d => d.rating_RT_tomatoscore),
     [0, 100],
     [marginLeft, width - marginRight]
   )
 
-// declare the y (horizontal position) scale
-const y = scaleLinear(
+// Declare the y (horizontal position) scale
+$: y = scaleLinear(
     // extent(data007, d => d.rating_RT_audience_score),
     [0, 100],
     [height - marginBottom, marginTop]
   )
+
+// Declare a radius scale
+$: r = scaleSqrt()
+    .domain(extent(data007, d => d.box_office_adjusted))
+    .range([2, 10]); 
+
+// Animation 
+const reveal = (node, { duration }) => {
+  const radius = select (node).attr('r');
+  return {
+    duration,
+    tick: (t) => select(node).attr('r', t * radius)
+  }
+}
 
 // Draw the chart
 const draw = () => {
 // Add the x-axis
 select("g.axisX")
  .attr('transform', `translate(0,${height - marginBottom})`)
- .call(
-  axisBottom(x)
-    //  .tickSizeOuter(0)
- )
+ .call(axisBottom(x))
+//  .ticks(width / 40)
 
 // Add the y-axis, remove the domain line, add grid lines and a label.
 select("g.axisY")
  .attr('transform', `translate(${marginLeft},0)`)
  .call(axisLeft(y).ticks(height / 40))
- .call(g => g.select('.domain').remove())
- .call(g =>g
-   .selectAll('.tick line')
-   .clone()
-   .attr('x2', width - marginLeft - marginRight)
-   .attr('stroke-opacity', 0.1)
- )
+
+ // TEMPORARY Add an explanatory text
  .call(g => g.append('text').attr('x', -marginLeft).attr('y', 10).attr('fill', 'currentColor').attr('text-anchor', 'start').text("↑ Audience score ; → Critics score"))
 }
 
@@ -94,32 +92,32 @@ console.log(data007[1])
 </script>
 
 <!-- new svg in d3 and Svelte -->
-
-<svg id='d3_Svelte_chart' width="60ch" viewbox="0 0 500 500">
-  <rect x="0" y="0" height="100%" width="100%" fill="purple" opacity="0.2" />
+<div bind:clientWidth={width}>
+<svg {width} {height} id='d3_Svelte_chart'>
+  <rect x="0" y="0" height="100%" width="100%" class="chart_background" />
   <g class="axisX"></g>
   <g class="axisY"></g>
-  <!-- add marks -->
-  <g style:opacity={opacityChange}>
-  {#each data007 as datum}
-    <circle cx={x(datum.rating_RT_tomatoscore)} cy={y(datum.rating_RT_audience_score)} r="5" 
-     />
 
-        <!-- <circle cx={x(datum.rating_RT_tomatoscore)} cy={y(datum.rating_RT_audience_score)} r="5" fill={colourDictionary[datum.type]}
-     /> -->
+  <!-- add marks -->
+  <g>
+  {#each data007 as datum}
+    <circle cx={x(datum.rating_RT_tomatoscore)} 
+    cy={y(datum.rating_RT_audience_score)} 
+    r={r(datum.box_office_adjusted)}
+    in:reveal={{duration: 1000}}
+    />
   {/each}
   </g>
 </svg>
-
-<!-- // drop down du chart a afficher  avec select binding  
+</div>
+<!--  
 
 TO DO 
-save the svelte features for later
+remove the svelte features
 tech: add tooltips to the circles in Svelte - see Connor's video
-tech: how to add a legend to the chart in Svelte
+drop down du chart a afficher  avec select binding 
+tech: how to automatically add a legend to the chart in Svelte
 tech: highlight a specific movie in the chart = condition avec class en plus, si id est this then class is that ; 
 on my own: make it mobile compatible
 on my own: work on css and formatting 
-on my own: improve the read me
-
 -->
