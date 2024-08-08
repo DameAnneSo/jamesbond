@@ -168,5 +168,10 @@ Chart
 /* select the rect inside the svg element */
 .chart_background {
   fill: var(--color-main);
-  opacity: 0.2; 
+  opacity: 0.2;
+}
+
+.dot {
+  stroke: #9ca3af;
+  opacity: 0.8;
 }
