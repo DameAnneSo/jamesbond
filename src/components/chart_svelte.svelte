@@ -46,7 +46,7 @@ const margin = {top: 30, right: 30, left: 30, bottom: 30}
 $: xScale = scaleLinear(
     // extent(data007, d => d.rating_RT_tomatoscore),
     [0, 100],
-    [0, width - margin.left - margin.right]
+    [0,width - margin.left - margin.right]
   )
 
 // Declare the y (horizontal position) scale - note that this syntax is more verbose than the one above
@@ -70,21 +70,6 @@ const draw = () => {
   setTimeout(() => {
     hasDrawn= true
   }, 500)
-
-// // Add the x-axis
-// // select("g.axisX")
-// //  .attr('transform', `translate(0,${height - marginBottom})`)
-// //  .call(axisBottom(xScale))
-// //  .ticks(width / 40)
-
-// // Add the y-axis, remove the domain line, add grid lines and a label.
-// select("g.axisY")
-//  .attr('transform', `translate(${marginLeft},0)`)
-//  .call(axisLeft(yScale).ticks(height / 40))
-
-//  // TEMPORARY Add an explanatory text
-//  .call(g => g.append('text').attr('x', -marginLeft).attr('y', 10).attr('fill', 'currentColor').attr('text-anchor', 'start').text("↑ Audience score ; → Critics score"))
-// 
 }
 
 console.log(dataRaw)
@@ -98,9 +83,7 @@ console.log(data007[1])
 
   <AxisX {height} {xScale} {margin}/>
   <AxisY {yScale} {width} {margin}/>
-  <!-- <g class="axisX"></g> -->
-  <!-- <g class="axisY"></g> -->
-
+  
   <!-- add marks -->
   <g >
   {#each data007 as datum}
@@ -112,7 +95,6 @@ console.log(data007[1])
     {cy} 
     r={
     hasDrawn? rScale(datum.box_office_adjusted):0}
-
     />
   {/each}
   </g>
@@ -123,7 +105,6 @@ console.log(data007[1])
   circle
   {
     transition: r 1000ms ease, transform 1000ms ease;
-
   }
 
   circle:hover {
@@ -138,7 +119,7 @@ tech: add tooltips to the circles in Svelte - see Connor's video
 drop down du chart a afficher  avec select binding 
 tech: how to automatically add a legend to the chart in Svelte
 tech: highlight a specific movie in the chart = condition avec class en plus, si id est this then class is that ; 
-add to Netlify: wont work because no public folder? 
+add to Netlify: wont work because no public folder? deploy svelte sur Netlify
 on my own: make it mobile compatible
 on my own: work on css and formatting 
 -->
