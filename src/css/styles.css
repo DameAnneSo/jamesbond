@@ -156,7 +156,21 @@ Specific Styles
 
 .page-column {
   margin: 0 auto;
-  width: 60ch; /* takes room of 60 characters */
+  width: 60%; /* takes room of 60 characters */
+}
+
+@media screen and (max-width: 1024px) {
+  .page-column {
+    margin: 0 auto;
+    width: 80%;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .page-column {
+    margin: 0 auto;
+    width: 90%;
+  }
 }
 
 /*
@@ -165,13 +179,6 @@ Chart
 ===============
 */
 
-/* select the rect inside the svg element */
-.chart_background {
-  fill: var(--color-main);
-  opacity: 0.2;
-}
+/* are inside the chart_svelte.svelte */
 
-.dot {
-  stroke: #9ca3af;
-  opacity: 0.8;
-}
+

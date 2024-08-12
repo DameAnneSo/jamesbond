@@ -3,6 +3,8 @@ export let height ;
 export let xScale;
 export let margin;
 
+// import { axisBottom, axisLeft } from 'd3-axis'
+
 let xTicks = xScale.ticks(5);
 </script>
 
@@ -10,7 +12,7 @@ let xTicks = xScale.ticks(5);
  {#each xTicks as tick}
   <text 
   x={xScale(tick)} 
-  y={height -margin.bottom}>{tick}</text>
+  y={height -margin.bottom}>{tick}%</text>
  {/each}
 
 </g>
