@@ -35,6 +35,11 @@ let data = dataRaw.map(d => ({
     spotify_rating:+d.spotify_rating
   }))
 
+  let colourDictionary = {
+    'EON': 'var(--color-main)', 
+'Famous Artists Productions': 'gray-400',
+'Taliafilm': 'gray-900',
+  }
 
 // Set the dimensions and margins of the graph
 let width = 500
@@ -56,7 +61,7 @@ $: yScale = scaleLinear()
 // Declare a radius scale
 $: rScale = scaleSqrt()
     .domain(extent(data, d => d.box_office_adjusted))
-    .range([2, 10]); 
+    .range([3, 20]); 
 
 // Draw the chart
 
@@ -78,13 +83,13 @@ console.log(data[1])
 $: console.log('hoveredData', hoveredData)
 </script>
 
-<!-- new svg in d3 and Svelte -->
+<!-- scatterplot -->
  <div class="chart-container" 
  bind:clientWidth={width} 
  on:mouseleave={() =>
 {hoveredData = null;
 }}>
-<svg {width} {height} id='d3_Svelte_chart'>
+<svg {width} {height} id='scatterplot'>
   <rect x="0" y="0" height="100%" width="100%" class="chart_background" />
 
   <AxisX {height} {xScale} {margin}/>
@@ -103,6 +108,7 @@ $: console.log('hoveredData', hoveredData)
     {cy} 
     r={
     hasDrawn? rScale(datum.box_office_adjusted):0}
+    fill={colourDictionary[datum.production_company]}
     opacity={hoveredData ? hoveredData == datum ? "1" : ".3" : "1"}
     on:mouseover={() => hoveredData = datum}
     on:focus={() => hoveredData = datum}
@@ -120,7 +126,7 @@ $: console.log('hoveredData', hoveredData)
   circle
   {
     transition: r 1000ms ease, transform 500ms ease-in-out, opacity 300ms ease;;
-    stroke: var(--color-main);
+    stroke: var(--color-gray-500);
     stroke-width: 1;
     /* opacity: 0.6; */
   }
@@ -148,9 +154,8 @@ question to G: how do you get a scatterplot to be a square but max height is the
 
 question to G: is there a way to do opacity={hoveredData ? hoveredData == datum ? "1" : ".3" : "1"} via css?
 
-
-1/ Work on better axis
-2/ drop down du chart a afficher avec select binding 
+1/ Work on better axes
+2/ drop down de la data dans le chart a afficher avec select binding et au lieu de datum.rating_RT_tomatoscore et datum.rating_RT_audience_score, on met datum.key et datum.value
 3/ tech: add a legend to the chart in Svelte (automatically?)
 4/ tech: highlight a specific movie in the chart = condition avec class en plus, si id est this then class is that ; 
 5/ Learn from the more complete course how to nudge the tooltip so that it doesn't go off the screen
