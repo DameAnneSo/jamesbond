@@ -1,33 +1,33 @@
-﻿id,title,year,production_company,Bond_actor,director,Box office (millions) Actual $,Box office (millions) Adjusted $2005,rating_Metacritic,rating_IMDB,rating_IMDB_numbers,length_movie,rating_RT_tomatoscore,rating_RT_audience_score,Song_theme,Song_composed_by,Song_Performed_by,spotify_rating,index
-1,Dr. No,1962,EON,Sean Connery,Terence Young,59.5,448.8,78,7.2 ,180K,1h 50m,95%,82%,James Bond Theme,Monty Norman,John Barry & Orchestra; Monty Norman,29,1
-2,From Russia with Love,1963,EON,Sean Connery,Terence Young,78.9,543.8,83,7.3 ,146K,1h 55m,97%,84%,From Russia with Love, Lionel Bart,Matt Monro,31,2
-3,Goldfinger,1964,EON,Sean Connery,Guy Hamilton,124.9,820.4,87,7.7 ,203K,1h 50m,99%,89%,Goldfinger,"Leslie Bricusse, Anthony Newley and John Barry",Shirley Bassey,47,3
-4,Thunderball,1965,EON,Sean Connery,Terence Young,141.2,848.1,64,6.9 ,127K,2h 10m,85%,73%,Thunderball,"John Barry, Don Black",Tom Jones,43,4
+﻿id,title,year,production_company,Bond_actor,director,Box office (millions) Actual $,Box office (millions) Adjusted $2005,rating_IMDB_Metascore,rating_IMDB,rating_IMDB_numbers,length_movie,rating_RT_tomatoscore,rating_RT_audience_score,Song_theme,Song_composed_by,Song_Performed_by,spotify_rating,index,,
+1,Dr. No,1962,EON,Sean Connery,Terence Young,59.5,448.8,78,72,180K,1h 50m,95%,82%,James Bond Theme,Monty Norman,John Barry & Orchestra; Monty Norman,29,1,,
+2,From Russia with Love,1963,EON,Sean Connery,Terence Young,78.9,543.8,83,73,146K,1h 55m,97%,84%,From Russia with Love, Lionel Bart,Matt Monro,31,2,,
+3,Goldfinger,1964,EON,Sean Connery,Guy Hamilton,124.9,820.4,87,77,203K,1h 50m,99%,89%,Goldfinger,"Leslie Bricusse, Anthony Newley and John Barry",Shirley Bassey,47,3,,
+4,Thunderball,1965,EON,Sean Connery,Terence Young,141.2,848.1,64,69,127K,2h 10m,85%,73%,Thunderball,"John Barry, Don Black",Tom Jones,43,4,,
 5,Casino Royale,1967,Famous Artists Productions,David Niven,"Ken Hughes
 John Huston
 Joseph McGrath
 Robert Parrish
 Val Guest
-Richard Talmadge",44.4,260,48,5.0 ,33K,2h 11m,26%,34%,Casino Royale,Burt Bacharach,Herb Alpert and the Tijuana Brass,37,5
-6,You Only Live Twice,1967,EON,Sean Connery,Lewis Gilbert,111.6,514.2,61,6.8 ,118K,1h 57m,74%,69%,You Only Live Twice,"John Barry, Leslie Bricusse ; charted single is produced by Lee Hazlewood and arranged by Billy Strange and in marked contrast to soundtrack version",Nancy Sinatra,45,6
-7,On Her Majesty's Secret Service,1969,EON,George Lazenby,Peter R. Hunt,64.6,291.5,61,6.7 ,100K,2h 22m,81%,64%,On Her Majesty's Secret Service,John Barry,The John Barry Orchestra,44,7
-8,Diamonds Are Forever,1971,EON,Sean Connery,Guy Hamilton,116,442.5,59,6.5 ,114K,2h,64%,57%,Diamonds Are Forever,"John Barry, Don Black",Shirley Bassey,51,8
-9,Live and Let Die,1973,EON,Roger Moore,Guy Hamilton,126.4,460.3,55,6.7 ,116K,2h 1m,67%,64%,Live and Let Die,"Paul McCartney, Linda McCartney",Paul McCartney & Wings,47,9
-10,The Man with the Golden Gun,1974,EON,Roger Moore,Guy Hamilton,97.6,334,43,6.7 ,113K,2h 5m,42%,55%,The Man with the Golden Gun,"John Barry, Don Black",Lulu,36,10
-11,The Spy Who Loved Me,1977,EON,Roger Moore,Lewis Gilbert,185.4,533,55,7.0 ,117K,2h 5m,82%,77%,Nobody Does It Better,"Marvin Hamlisch, Carole Bayer Sager",Carly Simon,34,11
-12,Moonraker,1979,EON,Roger Moore,Lewis Gilbert,210.3,535,66,6.2 ,109K,2h 6m,60%,43%,Moonraker,"John Barry, Hal David",Shirley Bassey,45,12
-13,For Your Eyes Only,1981,EON,Roger Moore,John Glen,194.9,449.4,54,6.7 ,109K,2h 7m,69%,64%,For Your Eyes Only,"Bill Conti, Mick Leeson",Sheena Easton,60,13
-14,Octopussy,1983,EON,Roger Moore,John Glen,183.7,373.8,63,6.5 ,113K,2h 11m,42%,47%,All Time High,"John Barry, Tim Rice",Rita Coolidge,48,14
-15,Never Say Never Again,1983,Taliafilm,Sean Connery,Irvin Kershner,160,314,68,6.1 ,73K,2h 14m,71%,37%,Never Say Never Again,Michel Legrand,Lani Hall,36,15
-16,A View to a Kill,1985,EON,Roger Moore,John Glen,152.4,275.2,40,6.3 ,105K,2h 11m,37%,40%,A View to a Kill,"John Barry, Duran Duran",Duran Duran,61,16
-17,The Living Daylights,1987,EON,Timothy Dalton,John Glen,191.2,313.5,59,6.7 ,106K,2h 10m,73%,66%,The Living Daylights,"John Barry, Pål Waaktaar",A-ha,50,17
-18,Licence to Kill,1989,EON,Timothy Dalton,John Glen,156.2,250.9,58,6.7 ,112K,2h 13m,80%,61%,Licence to Kill,"Narada Michael Walden, Jeffrey Cohen and Walter Afanasieff",Gladys Knight,48,18
-19,GoldenEye,1995,EON,Pierce Brosnan,Martin Campbell,352,518.5,65,7.2 ,271K,2h 10m,80%,83%,GoldenEye,"Bono, The Edge",Tina Turner,50,19
-20,Tomorrow Never Dies,1997,EON,Pierce Brosnan,Roger Spottiswoode,333,463.2,52,6.5 ,205K,1h 59m,57%,53%,Tomorrow Never Dies,"Sheryl Crow, Mitchell Froom",Sheryl Crow,44,20
-21,The World Is Not Enough,1999,EON,Pierce Brosnan,Michael Apted,361.8,439.5,57,6.4 ,210K,2h 8m,51%,49%,The World Is Not Enough,"David Arnold, Don Black",Garbage,40,21
-22,Die Another Day,2002,EON,Pierce Brosnan,Lee Tamahori,432,465.4,56,6.1 ,230K,2h 13m,55%,41%,Die Another Day,"Madonna, Mirwais Ahmadzaï",Madonna,54,22
-23,Casino Royale,2006,EON,Daniel Craig,Martin Campbell,606,589.4,80,8.0 ,697K,2h 24m,94%,90%,You Know My Name,"David Arnold, Chris Cornell",Chris Cornell,48,23
-24,Quantum of Solace,2008,EON,Daniel Craig,Marc Forster,586.1,514.2,58,6.5 ,472K,1h 46m,64%,58%,Another Way to Die,Jack White,"Jack White, Alicia Keys",53,24
-25,Skyfall,2012,EON,Daniel Craig,Sam Mendes,"1,108.60",943.5,81,7.8 ,733K,2h 23m,92%,86%,Skyfall,"Adele, Paul Epworth",Adele,83,25
-26,Spectre,2015,EON,Daniel Craig,Sam Mendes,880.7,725.5,60,6.8 ,468K,2h 28m,63%,61%,Writing's on the Wall,"Sam Smith, Jimmy Napes",Sam Smith,64,26
-27,No Time to Die,2021,EON,Daniel Craig,Cary Joji Fukunaga,771.2,582,68,7.3 ,447K,2h 43m,83%,88%,No Time to Die,"Billie Eilish, Finneas O'Connell",Billie Eilish,75,27
+Richard Talmadge",44.4,260,48,50,33K,2h 11m,26%,34%,Casino Royale,Burt Bacharach,Herb Alpert and the Tijuana Brass,37,5,,
+6,You Only Live Twice,1967,EON,Sean Connery,Lewis Gilbert,111.6,514.2,61,68,118K,1h 57m,74%,69%,You Only Live Twice,"John Barry, Leslie Bricusse ; charted single is produced by Lee Hazlewood and arranged by Billy Strange and in marked contrast to soundtrack version",Nancy Sinatra,45,6,,
+7,On Her Majesty's Secret Service,1969,EON,George Lazenby,Peter R. Hunt,64.6,291.5,61,67,100K,2h 22m,81%,64%,On Her Majesty's Secret Service,John Barry,The John Barry Orchestra,44,7,,
+8,Diamonds Are Forever,1971,EON,Sean Connery,Guy Hamilton,116,442.5,59,65,114K,2h,64%,57%,Diamonds Are Forever,"John Barry, Don Black",Shirley Bassey,51,8,,
+9,Live and Let Die,1973,EON,Roger Moore,Guy Hamilton,126.4,460.3,55,67,116K,2h 1m,67%,64%,Live and Let Die,"Paul McCartney, Linda McCartney",Paul McCartney & Wings,47,9,,
+10,The Man with the Golden Gun,1974,EON,Roger Moore,Guy Hamilton,97.6,334,43,67,113K,2h 5m,42%,55%,The Man with the Golden Gun,"John Barry, Don Black",Lulu,36,10,,
+11,The Spy Who Loved Me,1977,EON,Roger Moore,Lewis Gilbert,185.4,533,55,70,117K,2h 5m,82%,77%,Nobody Does It Better,"Marvin Hamlisch, Carole Bayer Sager",Carly Simon,34,11,,
+12,Moonraker,1979,EON,Roger Moore,Lewis Gilbert,210.3,535,66,62,109K,2h 6m,60%,43%,Moonraker,"John Barry, Hal David",Shirley Bassey,45,12,,
+13,For Your Eyes Only,1981,EON,Roger Moore,John Glen,194.9,449.4,54,67,109K,2h 7m,69%,64%,For Your Eyes Only,"Bill Conti, Mick Leeson",Sheena Easton,60,13,,
+14,Octopussy,1983,EON,Roger Moore,John Glen,183.7,373.8,63,65,113K,2h 11m,42%,47%,All Time High,"John Barry, Tim Rice",Rita Coolidge,48,14,,
+15,Never Say Never Again,1983,Taliafilm,Sean Connery,Irvin Kershner,160,314,68,61,73K,2h 14m,71%,37%,Never Say Never Again,Michel Legrand,Lani Hall,36,15,,
+16,A View to a Kill,1985,EON,Roger Moore,John Glen,152.4,275.2,40,63,105K,2h 11m,37%,40%,A View to a Kill,"John Barry, Duran Duran",Duran Duran,61,16,,
+17,The Living Daylights,1987,EON,Timothy Dalton,John Glen,191.2,313.5,59,67,106K,2h 10m,73%,66%,The Living Daylights,"John Barry, Pål Waaktaar",A-ha,50,17,,
+18,Licence to Kill,1989,EON,Timothy Dalton,John Glen,156.2,250.9,58,67,112K,2h 13m,80%,61%,Licence to Kill,"Narada Michael Walden, Jeffrey Cohen and Walter Afanasieff",Gladys Knight,48,18,,
+19,GoldenEye,1995,EON,Pierce Brosnan,Martin Campbell,352,518.5,65,72,271K,2h 10m,80%,83%,GoldenEye,"Bono, The Edge",Tina Turner,50,19,,
+20,Tomorrow Never Dies,1997,EON,Pierce Brosnan,Roger Spottiswoode,333,463.2,52,65,205K,1h 59m,57%,53%,Tomorrow Never Dies,"Sheryl Crow, Mitchell Froom",Sheryl Crow,44,20,,
+21,The World Is Not Enough,1999,EON,Pierce Brosnan,Michael Apted,361.8,439.5,57,64,210K,2h 8m,51%,49%,The World Is Not Enough,"David Arnold, Don Black",Garbage,40,21,,
+22,Die Another Day,2002,EON,Pierce Brosnan,Lee Tamahori,432,465.4,56,61,230K,2h 13m,55%,41%,Die Another Day,"Madonna, Mirwais Ahmadzaï",Madonna,54,22,,
+23,Casino Royale,2006,EON,Daniel Craig,Martin Campbell,606,589.4,80,80,697K,2h 24m,94%,90%,You Know My Name,"David Arnold, Chris Cornell",Chris Cornell,48,23,,
+24,Quantum of Solace,2008,EON,Daniel Craig,Marc Forster,586.1,514.2,58,65,472K,1h 46m,64%,58%,Another Way to Die,Jack White,"Jack White, Alicia Keys",53,24,,
+25,Skyfall,2012,EON,Daniel Craig,Sam Mendes,"1,108.60",943.5,81,78,733K,2h 23m,92%,86%,Skyfall,"Adele, Paul Epworth",Adele,83,25,,
+26,Spectre,2015,EON,Daniel Craig,Sam Mendes,880.7,725.5,60,68,468K,2h 28m,63%,61%,Writing's on the Wall,"Sam Smith, Jimmy Napes",Sam Smith,64,26,,
+27,No Time to Die,2021,EON,Daniel Craig,Cary Joji Fukunaga,771.2,582,68,73,447K,2h 43m,83%,88%,No Time to Die,"Billie Eilish, Finneas O'Connell",Billie Eilish,75,27,,

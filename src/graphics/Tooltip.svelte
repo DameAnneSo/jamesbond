@@ -3,8 +3,8 @@ export let data ;
 export let xScale;
 export let yScale;  
 
-$: console.log(xScale(data.rating_RT_tomatoscore))
-$: console.log(yScale(data.rating_RT_audience_score))
+// $: console.log(xScale(data.rating_RT_tomatoscore))
+// $: console.log(yScale(data.rating_RT_audience_score))
 
 </script>
 
