@@ -17,3 +17,12 @@ let yTicks = yScale.ticks(5);
  {/each}
 
 </g>
+<!-- 
+ const y = d3
+      .scaleLinear()
+      .domain([0, 20]) // Fixed domain from 0 to 20%
+      .range([height, 0]);
+    svg
+      .append("g")
+      .attr("class", "Y_axis")
+      .call(d3.axisLeft(y).tickFormat((d) => d + "%")); // Adding "%" to tick labels -->
