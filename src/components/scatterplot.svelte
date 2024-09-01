@@ -7,8 +7,6 @@
   import dataRaw from '../data/007_data.csv'
   import metrics from '../data/007_metrics.csv'
 
-  import AxisX from '../graphics/AxisX.svelte'
-  import AxisY from '../graphics/AxisY.svelte'
   import Tooltip from '../graphics/Tooltip.svelte'
 
   import { onMount } from 'svelte'
@@ -65,21 +63,21 @@
   let filmSelected = ''
 
   // Set the dimensions and margins of the graph
-  let height = 500
-  $: width = height
   const margin = { top: 30, right: 30, left: 30, bottom: 30 }
+  let height = 500 - margin.top - margin.bottom
+  let width = 500 - margin.left - margin.right
 
   // Declare the x (vertical position) scale
   $: xScale = scaleLinear()
     // extent(data, d => d.rating_RT_tomatoscore),
     .domain([0, 100])
-    .range([0, width - margin.left - margin.right])
+    .range([0, width])
 
   // Declare the y (horizontal position) scale
   $: yScale = scaleLinear()
     // extent(data, d => d.rating_RT_audience_score),
     .domain([0, 100])
-    .range([height - margin.bottom - margin.top, 0])
+    .range([height, 0])
 
   // Declare a radius scale
   $: rScale = scaleSqrt()
@@ -96,20 +94,14 @@
 
     // Add the x-axis
     select('g.axisX')
-      .attr('transform', `translate(0,${height - margin.bottom})`)
+      .attr('transform', `translate(0,${height})`)
       .call(axisBottom(xScale))
 
     // Add the y-axis, remove the domain line, add grid lines and a label.
     select('g.axisY')
-      .attr('transform', `translate(${margin.left},0)`)
+      // .attr('transform', `translate(${margin.left},0)`)
       .call(axisLeft(yScale).ticks(height / 40))
       .call(g => g.select('.domain').remove())
-      //  .call(g =>g
-      //    .selectAll('.tick line')
-      //    .clone()
-      //    .attr('x2', width - marginLeft - marginRight)
-      //    .attr('stroke-opacity', 0.1)
-      //  )
       .call(g => g.append('text').attr('x', -margin.left).attr('y', 10).attr('fill', 'currentColor').attr('text-anchor', 'start').text(`↑ ${axisYSelected} ; → ${axisXSelected}`))
   }
 
@@ -131,7 +123,14 @@
 <!-- menus -->
 <div class="grid-container">
   <div class="controller-container">
-    <p>x axis</p>
+    {#each metricsData as metric}
+      {#if axisXSelected === metric.metric_label}
+        <p>
+          X axis shows the
+          <!-- <b>{metric.metric_name}</b> -->
+          <!-- , which {metric.metric_short_explanation}</p> -->
+        </p>{/if}
+    {/each}
     <select bind:value={axisXSelected}>
       {#each axesOptions as axisXOption}
         {#if axisXOption !== axisYSelected}
@@ -140,7 +139,15 @@
       {/each}
     </select>
 
-    <p>y axis</p>
+    {#each metricsData as metric}
+      {#if axisYSelected === metric.metric_label}
+        <p>
+          y axis shows the
+          <!-- <b>{metric.metric_name}</b> -->
+          <!-- , which {metric.metric_short_explanation}</p> -->
+        </p>{/if}
+    {/each}
+
     <select bind:value={axisYSelected}>
       {#each axesOptions as axisYOption}
         {#if axisYOption !== axisXSelected}
@@ -163,76 +170,49 @@
   <!-- scatterplot -->
   <div
     class="chart-container"
-    bind:clientHeight={height}
     on:mouseleave={() => {
       hoveredData = null
     }}>
-    <svg height="100%" width="100%" id="scatterplot">
-      <!-- adding the background-->
-      <rect x="0" y="0" height="100%" width="100%" class="chart_background" />
+    <svg height="100%" width="100%" id="scatterplot" viewBox="0 0 500 500" preserveAspectRatio="xMidYMid meet">
+      <g transform="translate({margin.left}, {margin.top})">
+        <!-- adding the background-->
+        <rect x="0" y="0" height="100%" width="100%" class="chart_background" />
+        <!-- adding the axes -->
+        <g class="axisX"></g>
+        <g class="axisY"></g>
+        <!-- adding a diagonal line -->
+        <g class="diagonal_line">
+          <line x1={xScale(0)} y1={yScale(0)} x2={xScale(100)} y2={yScale(100)} stroke="black" stroke-width="0.5" />
+        </g>
 
-      <!-- adding the axes -->
-      <g class="axisX"></g>
-      <g class="axisY"></g>
-      <!-- 
-      <AxisX {height} {xScale} {margin}/>
-      <AxisY {yScale} {width} {margin}/> 
-      <line  x1="0" y1="100%" x2="100%" y2="0" stroke="black" stroke-width="0.5"/> 
-      -->
-
-      <!-- adding a diagonal line -->
-      <g class="diagonal_line">
-        <line x1={xScale(0)} y1={yScale(0)} x2={xScale(100)} y2={yScale(100)} stroke="black" stroke-width="0.5" />
-      </g>
-
-      <!-- add marks -->
-      <g class="inner-chart" transform="translate({margin.left}, {margin.top})">
-        {#each data.sort((a, b) => a.axisXSelected - b.axisXSelected) as datum}
-          {@const cx = xScale(datum[axisXSelected])}
-          {@const cy = yScale(datum[axisYSelected])}
-          <circle
-            class="dot"
-            class:filmHighlighted={filmSelected === `${datum.title}, ${datum.year}`}
-            style:transform-origin={`${cx}px ${cy}px`}
-            {cx}
-            {cy}
-            r={hasDrawn ? rScale(datum.box_office_adjusted) : 0}
-            fill={colourDictionary[datum.production_company]}
-            on:mouseover={() => (hoveredData = datum)}
-            on:focus={() => (hoveredData = datum)}
-            tabIndex="0" />
-        {/each}
+        <!-- add marks -->
+        <g class="inner-chart" transform="translate({margin.left}, {margin.top})">
+          {#each data.sort((a, b) => a.axisXSelected - b.axisXSelected) as datum}
+            {@const cx = xScale(datum[axisXSelected])}
+            {@const cy = yScale(datum[axisYSelected])}
+            <circle
+              class="dot"
+              class:filmHighlighted={filmSelected === `${datum.title}, ${datum.year}`}
+              style:transform-origin={`${cx}px ${cy}px`}
+              {cx}
+              {cy}
+              r={hasDrawn ? rScale(datum.box_office_adjusted) : 0}
+              fill={colourDictionary[datum.production_company]}
+              on:mouseover={() => (hoveredData = datum)}
+              on:focus={() => (hoveredData = datum)}
+              tabIndex="0" />
+          {/each}
+        </g>
       </g>
     </svg>
-      {#if hoveredData}
-    <Tooltip data={hoveredData} {xScale} {yScale} {axisXSelected} {axisYSelected}/>
-  {/if}
+    {#if hoveredData}
+      <Tooltip data={hoveredData} {xScale} {yScale} {axisXSelected} {axisYSelected} {width} />
+    {/if}
   </div>
-
 </div>
-
-<!-- {#if filmSelected}
-  <div class="filmSelected">{filmSelected}</div>
-{/if} -->
-
-{#each metricsData as metric}
-  {#if axisXSelected === metric.metric_label}
-    <p><b>{metric.metric_name}</b>:{metric.metric_short_explanation}</p>
-    <small>{metric.metric_long_explanation}</small>
-  {/if}
-{/each}
-
-{#each metricsData as metric}
-  {#if axisYSelected === metric.metric_label}
-    <p><b>{metric.metric_name}</b>:{metric.metric_short_explanation}</p>
-    <small>{metric.metric_long_explanation}</small>
-  {/if}
-{/each}
 
 <!--  
 TO DO 
-
-1/ Data(numbers) is undefined in the hover tooltip because of the hard coding of what I need 
 
 2/ Work on better axes to add to how to create the axes with svelte https://d3js.org/getting-started
 => not appearing on the chart
@@ -283,15 +263,22 @@ const data = await d3.dsv(",", "example.csv", (d) => {
 
 <style>
   .grid-container {
-    display: grid;
-    height: 100vh;
-    grid-template-rows: 12rem calc(100vh - 12rem);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 97vw; /* Max width to the viewport width */
+    /* overflow: hidden; Hide any overflow */
+    width: 100%; /* Adjust based on your design needs */
+    height: auto;
+    max-height: 90vh; /* Limit to the viewport height */
   }
+  /* .chart-container {   
+  } */
 
-  .chart-container {
+  .chart-container svg {
+    width: 100%;
     height: 100%;
-    aspect-ratio: 1/1;
-    margin: 0 auto;
   }
 
   circle {
