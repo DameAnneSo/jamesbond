@@ -157,6 +157,8 @@ Specific Styles
 .page-column {
   margin: 0 auto;
   width: 60%; /* takes room of 60 characters */
+  height: 100%;
+  max-width: 1200px; /* Limit maximum width for very large screens */
 }
 
 @media screen and (max-width: 1024px) {

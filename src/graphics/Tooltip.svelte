@@ -4,11 +4,13 @@
   export let yScale
   export let axisXSelected
   export let axisYSelected
+  export let width // Imported from App.svelte; represents chart width
+
 
   $: x = xScale(data[axisXSelected])
-  $: y = yScale(data[axisYSelected]) + 50
+  $: y = yScale(data[axisYSelected])
 
-  export let width // Imported from App.svelte; represents chart width
+  
   let tooltipWidth // Calculated using bind:clientWidth below
   $: xPosition = x + tooltipWidth > width ? x - tooltipWidth : x
 </script>
@@ -16,15 +18,19 @@
 <div
   class="tooltip"
   style="position: absolute; 
-      top: {y}px; 
-      left: {x}px"
+      top: {y + 50}px; 
+      left: {x + 50}px"
   bind:clientWidth={tooltipWidth}>
-  <p>{data.title} <span class="tooltip_year">{data.year}</span></p>
-  <p>IMDB rating: <span class="tooltip_score">{data['IMDB users']}</span> based on {data.rating_IMDB_numbers} votes</p>
-  <p>Metacritic rating: <span class="tooltip_score">{data['IMDB critics']}</span></p>
-  <p>Rotten Tomatoes Tomatoscore: <span class="tooltip_score">{data['Rotten Tomatoes critics']}</span></p>
-  <p>Rotten Tomatoes audience_score: <span class="tooltip_score">{data['Rotten Tomatoes users']}</span></p>
-  <p>Box office adjusted 2005: ${data.box_office_adjusted}M <span>(${data.box_office_actual}M in real box office in dollars)</span></p>
+  <h1>{data.title}</h1>
+  <span class="tooltip_receeded">({data.year})</span>
+  <p>Audience scores</p>
+  <p>
+    <span class="tooltip_score">{data['Rotten Tomatoes users']}</span> on Rotten Tomatoes | <span class="tooltip_score">{data['IMDB users']}</span> on IMDBbased on {data.rating_IMDB_numbers}
+    votes
+  </p>
+  <p>Juries scores</p>
+  <p><span class="tooltip_score">{data['Rotten Tomatoes critics']}</span> on Rotten Tomatoes | <span class="tooltip_score">{data['IMDB critics']} </span>on IMDB</p>
+  <p><span class="tooltip_receeded">${data.box_office_adjusted}M in box office adjusted 2005 | (${data.box_office_actual}M in real box office in dollars)</span></p>
 </div>
 
 <style>
@@ -42,5 +48,19 @@
   p {
     margin: 0;
     font-size: 0.7rem;
+  }
+
+  h1 {
+    font-size: 1rem;
+    margin: 0;
+    display: inline-block;
+  }
+  .tooltip_receeded {
+    font-size: 0.6rem;
+  }
+
+  .tooltip_score {
+    font-weight: bold;
+    color: var(--color-main);
   }
 </style>

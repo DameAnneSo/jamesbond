@@ -93,16 +93,10 @@
     }, 500)
 
     // Add the x-axis
-    select('g.axisX')
-      .attr('transform', `translate(0,${height})`)
-      .call(axisBottom(xScale))
+    select('g.axisX').attr('transform', `translate(0,${height})`).call(axisBottom(xScale))
 
     // Add the y-axis, remove the domain line, add grid lines and a label.
-    select('g.axisY')
-      // .attr('transform', `translate(${margin.left},0)`)
-      .call(axisLeft(yScale).ticks(height / 40))
-      .call(g => g.select('.domain').remove())
-      .call(g => g.append('text').attr('x', -margin.left).attr('y', 10).attr('fill', 'currentColor').attr('text-anchor', 'start').text(`↑ ${axisYSelected} ; → ${axisXSelected}`))
+    select('g.axisY').call(axisLeft(yScale))
   }
 
   // Create a hovered data variable
@@ -117,54 +111,49 @@
   // $: console.log('hoveredData', hoveredData)
   // $: console.log(axisXSelected, "is axis X")
   // $: console.log(axisYSelected, "is axis Y")
-  $: console.log(filmSelected, 'is film selected')
+  // $: console.log(filmSelected, 'is film selected')
 </script>
 
 <!-- menus -->
 <div class="grid-container">
+  <h1>Svelte Training (007)</h1>
   <div class="controller-container">
-    {#each metricsData as metric}
-      {#if axisXSelected === metric.metric_label}
-        <p>
-          X axis shows the
-          <!-- <b>{metric.metric_name}</b> -->
-          <!-- , which {metric.metric_short_explanation}</p> -->
-        </p>{/if}
-    {/each}
-    <select bind:value={axisXSelected}>
-      {#each axesOptions as axisXOption}
-        {#if axisXOption !== axisYSelected}
-          <option>{axisXOption}</option>
-        {/if}
-      {/each}
-    </select>
+    <div class="first-row">
+      <p>Select your metric</p>
+    </div>
 
-    {#each metricsData as metric}
-      {#if axisYSelected === metric.metric_label}
-        <p>
-          y axis shows the
-          <!-- <b>{metric.metric_name}</b> -->
-          <!-- , which {metric.metric_short_explanation}</p> -->
-        </p>{/if}
-    {/each}
+    <div class="third-row">
+      <select bind:value={axisXSelected}>
+        {#each axesOptions as axisXOption}
+          {#if axisXOption !== axisYSelected}
+            <option>{axisXOption}</option>
+          {/if}
+        {/each}
+      </select>
 
-    <select bind:value={axisYSelected}>
-      {#each axesOptions as axisYOption}
-        {#if axisYOption !== axisXSelected}
-          <option>{axisYOption}</option>
-        {/if}
-      {/each}
-    </select>
+      <select bind:value={axisYSelected}>
+        {#each axesOptions as axisYOption}
+          {#if axisYOption !== axisXSelected}
+            <option>{axisYOption}</option>
+          {/if}
+        {/each}
+      </select>
 
-    <p>highlight a movie</p>
-    <select bind:value={filmSelected}>
-      {#each filmOptions as filmOption}
-        <!-- <option value="">{filmOption}</option> -->
-        <option>{filmOption}</option>
-      {/each}
-    </select>
+      <select bind:value={filmSelected}>
+        {#each filmOptions as filmOption}
+          <option>{filmOption}</option>
+        {/each}
+      </select>
+    </div>
 
-    <button on:click={() => (filmSelected = undefined)}>Reset</button>
+    <div class="second-row">
+      <p>horizontal axis</p>
+      <p>vertical axis</p>
+      <div class="highlight-movie">
+        <p>highlight a movie</p>
+        <button class="reset-button" on:click={() => (filmSelected = undefined)}>Reset</button>
+      </div>
+    </div>
   </div>
 
   <!-- scatterplot -->
@@ -175,8 +164,6 @@
     }}>
     <svg height="100%" width="100%" id="scatterplot" viewBox="0 0 500 500" preserveAspectRatio="xMidYMid meet">
       <g transform="translate({margin.left}, {margin.top})">
-        <!-- adding the background-->
-        <rect x="0" y="0" height="100%" width="100%" class="chart_background" />
         <!-- adding the axes -->
         <g class="axisX"></g>
         <g class="axisY"></g>
@@ -184,9 +171,36 @@
         <g class="diagonal_line">
           <line x1={xScale(0)} y1={yScale(0)} x2={xScale(100)} y2={yScale(100)} stroke="black" stroke-width="0.5" />
         </g>
+        <g>
+          <text x="30" y="300" text-anchor="middle" transform="rotate(-45)" class="annotation_chart">
+            <tspan x="320" dy="1.2em" text-anchor="end">equal</tspan>
+            <tspan x="320" dy="1.2em" text-anchor="end">appreciation</tspan></text>
+        </g>
+
+        <g>
+          <text y="3" text-anchor="start" class="annotation_chart">
+            {#each metricsData as metric}
+              {#if axisYSelected === metric.metric_label}
+                <tspan x="5" dy="1.2em">{metric.metric_name}</tspan>
+                <tspan x="5" dy="1.2em"> {metric.metric_short_explanation}</tspan>
+              {/if}
+            {/each}
+          </text>
+        </g>
+
+        <g>
+          <text y="410" text-anchor="end" class="annotation_chart">
+            {#each metricsData as metric}
+              {#if axisXSelected === metric.metric_label}
+                <tspan x="440" dy="1.2em">{metric.metric_name}</tspan>
+                <tspan x="440" dy="1.2em"> {metric.metric_short_explanation}</tspan>
+              {/if}
+            {/each}
+          </text>
+        </g>
 
         <!-- add marks -->
-        <g class="inner-chart" transform="translate({margin.left}, {margin.top})">
+        <g class="inner-chart">
           {#each data.sort((a, b) => a.axisXSelected - b.axisXSelected) as datum}
             {@const cx = xScale(datum[axisXSelected])}
             {@const cy = yScale(datum[axisYSelected])}
@@ -214,43 +228,17 @@
 <!--  
 TO DO 
 
-2/ Work on better axes to add to how to create the axes with svelte https://d3js.org/getting-started
-=> not appearing on the chart
+1/ fix the tooltip position 
 
-3/ line that goes diagonally from 0,0 to 100,100
-=> wrong placement?
+2/ on my own: work on css and formatting, especially the controller when you are in mobile view
 
- // Diagonal line: calculate the start and end points
-    const xStart = x(0), // Starting point on the X axis
-      yStart = y(0), // Starting point on the Y axis (inverted because SVG's 0,0 is at the top left)
-      xEnd = x(20), // Ending point on the X axis
-      yEnd = y(20); // Ending point on the Y axis
-    // Append a diagonal dotted line from bottom left to top right
-    svg
-      .append("line")
-      .attr("class", "diagonal_line")
-      .attr("x1", xStart)
-      .attr("y1", yStart)
-      .attr("x2", xEnd)
-      .attr("y2", yEnd);
+3/add favicon website
 
-4/ key / value legend: mise en forme
-
-5/  highlight a specific movie in the chart = OVERWRITE when you hover over the chart AVEC ANOTHER HAS 
-
-6/ Add mobile formatting with media queries
-
-7/ on my own: work on css and formatting 
-
-8/add favicon website
-
-9/ working on github? ASK GOOGLE 
+4/ working on github? ASK GOOGLE 
 see: https://github.com/orgs/community/discussions/21853
 and https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site#publishing-with-a-custom-github-actions-workflow
 
-10/tech: add a legend to the chart in Svelte (automatically?) LAYERCAKE
-
-11/ try?
+5/ try?
 const data = await d3.dsv(",", "example.csv", (d) => {
   return {
     year: new Date(+d.Year, 0, 1), // convert "Year" column to Date
@@ -265,20 +253,78 @@ const data = await d3.dsv(",", "example.csv", (d) => {
   .grid-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    max-width: 97vw; /* Max width to the viewport width */
-    /* overflow: hidden; Hide any overflow */
-    width: 100%; /* Adjust based on your design needs */
-    height: auto;
-    max-height: 90vh; /* Limit to the viewport height */
+    height: 100vh; /* Full viewport height */
   }
-  /* .chart-container {   
-  } */
 
-  .chart-container svg {
-    width: 100%;
-    height: 100%;
+  .controller-container {
+    display: grid;
+    grid-template-rows: auto auto auto;
+    grid-template-columns: 1fr 1fr 3fr;
+    gap: 0 10px;
+  }
+
+  .first-row {
+    grid-column: span 3;
+    align-items: flex-end;
+  }
+
+  .second-row {
+    display: contents;
+  }
+
+  .second-row p {
+    margin: 0;
+  }
+
+  .highlight-movie {
+    display: flex;
+  }
+
+  .third-row {
+    display: contents;
+  }
+
+  .reset-button {
+    padding: 5px 20px;
+    margin-left: 10px;
+  }
+
+  /* Media query for mobile screens */
+  @media (max-width: 600px) {
+    .controller-container {
+      grid-template-rows: repeat(6, auto);
+      grid-template-columns: 1fr;
+    }
+
+    .first-row,
+    .second-row,
+    .third-row {
+      display: block;
+    }
+
+    .highlight-movie {
+      display: block;
+    }
+
+    .reset-button {
+      margin-left: 0;
+      margin-top: 10px;
+    }
+
+    .third-row {
+      grid-row: 2;
+    }
+
+    .second-row {
+      grid-row: 3;
+    }
+  }
+  .chart-container {
+    flex: 1; /* Take up remaining space */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 0; /* Allow the container to shrink if needed */
   }
 
   circle {
@@ -311,8 +357,8 @@ const data = await d3.dsv(",", "example.csv", (d) => {
     outline: none;
   }
 
-  .chart_background {
-    fill: var(--color-main);
-    opacity: 0.2;
+  .annotation_chart {
+    font-size: 0.5rem;
+    color: var(--color-gray-500);
   }
 </style>
