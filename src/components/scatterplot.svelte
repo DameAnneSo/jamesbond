@@ -228,9 +228,12 @@
 <!--  
 TO DO 
 
+1/ mettre les petits points au dessus des grands 
+
 1/ fix the tooltip position 
 
-2/ on my own: work on css and formatting, especially the controller when you are in mobile view
+2/ on my own: work on css and formatting, especially the controllers when you are in mobile view - perhaps put labels and buttons in the same div and make them flex ; try to draw it 
+et ajouter un footer 
 
 3/add favicon website
 
@@ -247,6 +250,11 @@ const data = await d3.dsv(",", "example.csv", (d) => {
     length: +d.Length // convert "Length" column to number
   };
 });  
+
+LAYERCAKE 
+regarder la doc
+ajouter line 
+ajouter axes 
  -->
 
 <style>

@@ -6,29 +6,29 @@
   export let axisYSelected
   export let width // Imported from App.svelte; represents chart width
 
-
   $: x = xScale(data[axisXSelected])
   $: y = yScale(data[axisYSelected])
 
-  
   let tooltipWidth // Calculated using bind:clientWidth below
   $: xPosition = x + tooltipWidth > width ? x - tooltipWidth : x
+
+  $: console.log(x, y)
 </script>
 
 <div
   class="tooltip"
   style="position: absolute; 
-      top: {y + 50}px; 
-      left: {x + 50}px"
+      top: {y}px; 
+      left: {x}px"
   bind:clientWidth={tooltipWidth}>
   <h1>{data.title}</h1>
   <span class="tooltip_receeded">({data.year})</span>
-  <p>Audience scores</p>
+  <p class="tooltip_metric">Audience scores</p>
   <p>
     <span class="tooltip_score">{data['Rotten Tomatoes users']}</span> on Rotten Tomatoes | <span class="tooltip_score">{data['IMDB users']}</span> on IMDBbased on {data.rating_IMDB_numbers}
     votes
   </p>
-  <p>Juries scores</p>
+  <p class="tooltip_metric">Juries scores</p>
   <p><span class="tooltip_score">{data['Rotten Tomatoes critics']}</span> on Rotten Tomatoes | <span class="tooltip_score">{data['IMDB critics']} </span>on IMDB</p>
   <p><span class="tooltip_receeded">${data.box_office_adjusted}M in box office adjusted 2005 | (${data.box_office_actual}M in real box office in dollars)</span></p>
 </div>
@@ -62,5 +62,10 @@
   .tooltip_score {
     font-weight: bold;
     color: var(--color-main);
+  }
+
+  .tooltip_metric {
+    font-style: italic;
+    color: var(--color-gray-500);
   }
 </style>

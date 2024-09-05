@@ -16,6 +16,7 @@
     "d3-selection": "^3.0.0",
     "d3-shape": "^3.2.0",
     "d3-time-format": "^4.1.0",
+    "layercake": "8.4.0-beta.1",
     "rollup": "^3.20.0",
     "svelte": "^3.57.0",
     "terser": "^5.16.6",
