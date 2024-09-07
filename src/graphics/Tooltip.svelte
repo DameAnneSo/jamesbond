@@ -5,6 +5,9 @@
   export let axisXSelected
   export let axisYSelected
   export let width // Imported from App.svelte; represents chart width
+  export let xPosition
+  export let yPosition
+  export let handleMouseMove
 
   $: x = xScale(data[axisXSelected])
   $: yPosition = yScale(data[axisYSelected])
@@ -15,19 +18,12 @@
   $: console.log(x, yPosition)
 </script>
 
-<!-- 
 <div
   class="tooltip"
   style="position: absolute; 
       top: {yPosition}px; 
       left: {xPosition}px"
-  bind:clientWidth={tooltipWidth}> -->
-
-<div
-  class="tooltip"
-  style="position: absolute; 
-      top: {yPosition * 1.2}px; 
-      left: {xPosition}px">
+  bind:clientWidth={tooltipWidth}>
   <h1>{data.title} <span class="tooltip_receeded">| ({data.year}) </span></h1>
   <p>
     <span class="tooltip_receeded"

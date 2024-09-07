@@ -113,8 +113,8 @@
     const cursorX = event.clientX
     const cursorY = event.clientY
 
-    xPosition = cursorX + tooltipWidth > width ? cursorX - tooltipWidth : cursorX
-    yPosition = cursorY + 20 // Adjust the value to position the tooltip just below the cursor
+    // xPosition = cursorX + tooltipWidth > width ? cursorX - tooltipWidth : cursorX
+    // yPosition = cursorY + 20 // Adjust the value to position the tooltip just below the cursor
   }
   // TEST CONSOLE LOGS
   // console.log(hasDrawn)
