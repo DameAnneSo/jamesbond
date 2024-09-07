@@ -97,11 +97,25 @@
 
     // Add the y-axis, remove the domain line, add grid lines and a label.
     select('g.axisY').call(axisLeft(yScale))
+
+    // Attach the mousemove event listener to the SVG or container element
+    select('svg').on('mousemove', handleMouseMove)
   }
 
   // Create a hovered data variable
   let hoveredData
 
+  // For the tooltips
+  let xPosition = 0
+  let yPosition = 0
+
+  function handleMouseMove(event) {
+    const cursorX = event.clientX
+    const cursorY = event.clientY
+
+    xPosition = cursorX + tooltipWidth > width ? cursorX - tooltipWidth : cursorX
+    yPosition = cursorY + 20 // Adjust the value to position the tooltip just below the cursor
+  }
   // TEST CONSOLE LOGS
   // console.log(hasDrawn)
   // console.log(dataRaw)
@@ -115,125 +129,137 @@
 </script>
 
 <!-- menus -->
+<h1 class="title">The Bond Ratings Conundrum</h1>
 <div class="grid-container">
-  <h1>Svelte Training (007)</h1>
-  <div class="controller-container">
-    <div class="first-row">
-      <p>Select your metric</p>
+  <div class="left-column">
+    <div class="intro-text">
+      <p>
+        Every time I am about to watch a film online, I check the overall ratings first. But should I consider all the different metrics available, or do they tend to align?
+        <br />
+        Let's conduct a test with a limited dataset: the James Bond films. Are critics and the general audience in agreement? Do Rotten Tomatoes and IMDB ratings align? Dive into the
+        data yourself with this chart and filters.
+      </p>
     </div>
+    <div class="controllers-section">
+      <div class="controller-container">
+        <div class="controller-Y">
+          <p class="controller_text">Select your metrics: vertical axis</p>
+          <select bind:value={axisYSelected} class="axisY_menu">
+            {#each axesOptions as axisYOption}
+              {#if axisYOption !== axisXSelected}
+                <option>{axisYOption}</option>
+              {/if}
+            {/each}
+          </select>
+        </div>
 
-    <div class="third-row">
-      <select bind:value={axisXSelected}>
-        {#each axesOptions as axisXOption}
-          {#if axisXOption !== axisYSelected}
-            <option>{axisXOption}</option>
-          {/if}
-        {/each}
-      </select>
-
-      <select bind:value={axisYSelected}>
-        {#each axesOptions as axisYOption}
-          {#if axisYOption !== axisXSelected}
-            <option>{axisYOption}</option>
-          {/if}
-        {/each}
-      </select>
-
-      <select bind:value={filmSelected}>
-        {#each filmOptions as filmOption}
-          <option>{filmOption}</option>
-        {/each}
-      </select>
-    </div>
-
-    <div class="second-row">
-      <p>horizontal axis</p>
-      <p>vertical axis</p>
-      <div class="highlight-movie">
-        <p>highlight a movie</p>
-        <button class="reset-button" on:click={() => (filmSelected = undefined)}>Reset</button>
+        <div class="controller-X">
+          <p class="controller_text">horizontal axis</p>
+          <select bind:value={axisXSelected} class="axisX_menu">
+            {#each axesOptions as axisXOption}
+              {#if axisXOption !== axisYSelected}
+                <option>{axisXOption}</option>
+              {/if}
+            {/each}
+          </select>
+        </div>
+        <div class="controller-film">
+          <p class="controller_text">highlight a movie</p>
+          <select bind:value={filmSelected} class="filmSelected_menu">
+            {#each filmOptions as filmOption}
+              <option>{filmOption}</option>
+            {/each}
+          </select>
+          <div class="filmSelected_text">
+            <button class="filmSelected_reset" on:click={() => (filmSelected = undefined)}>Reset</button>
+          </div>
+        </div>
       </div>
     </div>
+    <div class="footnote-container-desktop">
+      <p class="footnote-text">
+        Last update: May 2024 <br />
+        Sources: IMDB, Rotten Tomatoes, Wikipedia <br />
+        Author: Anne-Sophie Pereira De Sá | <a href="https://curiousdata.netlify.app/" target="_blank">Curious Data Website</a>
+      </p>
+    </div>
   </div>
+  <div class="right-column">
+    <!-- scatterplot -->
+    <div
+      class="chart-container"
+      on:mouseleave={() => {
+        hoveredData = null
+      }}>
+      <svg height="100%" width="100%" id="scatterplot" viewBox="0 0 500 500" preserveAspectRatio="xMidYMid meet">
+        <g transform="translate({margin.left}, {margin.top})">
+          <!-- adding the axes -->
+          <g class="axisX"></g>
+          <g class="axisY"></g>
+          <!-- adding a diagonal line -->
+          <g class="diagonal_line">
+            <line x1={xScale(0)} y1={yScale(0)} x2={xScale(100)} y2={yScale(100)} stroke="black" stroke-width="0.5" />
+          </g>
+          <g>
+            <text x="30" y="300" text-anchor="middle" transform="rotate(-45)" class="annotation_chart">
+              <tspan x="320" dy="1.2em" text-anchor="end">equal</tspan>
+              <tspan x="320" dy="1.2em" text-anchor="end">appreciation</tspan></text>
+          </g>
 
-  <!-- scatterplot -->
-  <div
-    class="chart-container"
-    on:mouseleave={() => {
-      hoveredData = null
-    }}>
-    <svg height="100%" width="100%" id="scatterplot" viewBox="0 0 500 500" preserveAspectRatio="xMidYMid meet">
-      <g transform="translate({margin.left}, {margin.top})">
-        <!-- adding the axes -->
-        <g class="axisX"></g>
-        <g class="axisY"></g>
-        <!-- adding a diagonal line -->
-        <g class="diagonal_line">
-          <line x1={xScale(0)} y1={yScale(0)} x2={xScale(100)} y2={yScale(100)} stroke="black" stroke-width="0.5" />
-        </g>
-        <g>
-          <text x="30" y="300" text-anchor="middle" transform="rotate(-45)" class="annotation_chart">
-            <tspan x="320" dy="1.2em" text-anchor="end">equal</tspan>
-            <tspan x="320" dy="1.2em" text-anchor="end">appreciation</tspan></text>
-        </g>
+          <g>
+            <text y="3" text-anchor="start">
+              {#each metricsData as metric}
+                {#if axisYSelected === metric.metric_label}
+                  <tspan class="annotation_title" x="5" dy="1.2em">{metric.metric_name}</tspan>
+                  <tspan class="annotation_chart" x="5" dy="1.2em"> {metric.metric_short_explanation}</tspan>
+                {/if}
+              {/each}
+            </text>
+          </g>
 
-        <g>
-          <text y="3" text-anchor="start" class="annotation_chart">
-            {#each metricsData as metric}
-              {#if axisYSelected === metric.metric_label}
-                <tspan x="5" dy="1.2em">{metric.metric_name}</tspan>
-                <tspan x="5" dy="1.2em"> {metric.metric_short_explanation}</tspan>
-              {/if}
+          <g>
+            <text y="400" text-anchor="end">
+              {#each metricsData as metric}
+                {#if axisXSelected === metric.metric_label}
+                  <tspan class="annotation_title" x="440" dy="1.2em">{metric.metric_name}</tspan>
+                  <tspan class="annotation_chart" x="440" dy="1.2em"> {metric.metric_short_explanation}</tspan>
+                {/if}
+              {/each}
+            </text>
+          </g>
+
+          <!-- add marks -->
+          <g class="inner-chart">
+            {#each data.sort((a, b) => a.axisXSelected - b.axisXSelected) as datum}
+              {@const cx = xScale(datum[axisXSelected])}
+              {@const cy = yScale(datum[axisYSelected])}
+              <circle
+                class="dot"
+                class:filmHighlighted={filmSelected === `${datum.title}, ${datum.year}`}
+                style:transform-origin={`${cx}px ${cy}px`}
+                {cx}
+                {cy}
+                r={hasDrawn ? rScale(datum.box_office_adjusted) : 0}
+                fill="red"
+                on:mouseover={() => (hoveredData = datum)}
+                on:focus={() => (hoveredData = datum)}
+                tabIndex="0" />
             {/each}
-          </text>
+          </g>
         </g>
-
-        <g>
-          <text y="410" text-anchor="end" class="annotation_chart">
-            {#each metricsData as metric}
-              {#if axisXSelected === metric.metric_label}
-                <tspan x="440" dy="1.2em">{metric.metric_name}</tspan>
-                <tspan x="440" dy="1.2em"> {metric.metric_short_explanation}</tspan>
-              {/if}
-            {/each}
-          </text>
-        </g>
-
-        <!-- add marks -->
-        <g class="inner-chart">
-          {#each data.sort((a, b) => a.axisXSelected - b.axisXSelected) as datum}
-            {@const cx = xScale(datum[axisXSelected])}
-            {@const cy = yScale(datum[axisYSelected])}
-            <circle
-              class="dot"
-              class:filmHighlighted={filmSelected === `${datum.title}, ${datum.year}`}
-              style:transform-origin={`${cx}px ${cy}px`}
-              {cx}
-              {cy}
-              r={hasDrawn ? rScale(datum.box_office_adjusted) : 0}
-              fill={colourDictionary[datum.production_company]}
-              on:mouseover={() => (hoveredData = datum)}
-              on:focus={() => (hoveredData = datum)}
-              tabIndex="0" />
-          {/each}
-        </g>
-      </g>
-    </svg>
-    {#if hoveredData}
-      <Tooltip data={hoveredData} {xScale} {yScale} {axisXSelected} {axisYSelected} {width} />
-    {/if}
+      </svg>
+      {#if hoveredData}
+        <Tooltip data={hoveredData} {xScale} {yScale} {axisXSelected} {axisYSelected} {width} {xPosition} {yPosition} {handleMouseMove} />
+      {/if}
+    </div>
   </div>
 </div>
 
 <!--  
 TO DO 
-
-1/ mettre les petits points au dessus des grands 
-
 1/ fix the tooltip position 
 
-2/ on my own: work on css and formatting, especially the controllers when you are in mobile view - perhaps put labels and buttons in the same div and make them flex ; try to draw it 
-et ajouter un footer 
+2/ on my own: work on css and formatting
 
 3/add favicon website
 
@@ -258,82 +284,112 @@ ajouter axes
  -->
 
 <style>
+  .title {
+    width: 100%;
+    text-align: left;
+    margin-bottom: 1rem;
+  }
+
+  .footnote-text {
+    font-size: 0.6rem;
+    color: var(--color-gray-500);
+    margin-top: auto;
+
+    flex-shrink: 0;
+    /* align-self: end; */
+  }
+
   .grid-container {
     display: flex;
+    flex-grow: 1;
+    gap: 0.5rem;
+    overflow: hidden;
+  }
+
+  .left-column {
+    width: 33%;
+    display: flex;
     flex-direction: column;
-    height: 100vh; /* Full viewport height */
+    margin-right: 2rem;
+    justify-content: space-between;
   }
 
-  .controller-container {
-    display: grid;
-    grid-template-rows: auto auto auto;
-    grid-template-columns: 1fr 1fr 3fr;
-    gap: 0 10px;
+  .intro-text {
+    margin-bottom: 0rem;
+    text-wrap: balance;
   }
 
-  .first-row {
-    grid-column: span 3;
-    align-items: flex-end;
-  }
-
-  .second-row {
-    display: contents;
-  }
-
-  .second-row p {
-    margin: 0;
-  }
-
-  .highlight-movie {
+  .right-column {
+    width: 67%;
     display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    /* align-items: flex-start; */
   }
 
-  .third-row {
-    display: contents;
+  .controller-Y,
+  .controller-X,
+  .controller-film {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0.5rem;
   }
 
-  .reset-button {
-    padding: 5px 20px;
-    margin-left: 10px;
+  .controller_text {
+    font-size: 0.8rem;
+    color: var(--color-gray-500);
+    margin-bottom: 0;
+    font-style: italic;
   }
 
-  /* Media query for mobile screens */
-  @media (max-width: 600px) {
-    .controller-container {
-      grid-template-rows: repeat(6, auto);
-      grid-template-columns: 1fr;
-    }
-
-    .first-row,
-    .second-row,
-    .third-row {
-      display: block;
-    }
-
-    .highlight-movie {
-      display: block;
-    }
-
-    .reset-button {
-      margin-left: 0;
-      margin-top: 10px;
-    }
-
-    .third-row {
-      grid-row: 2;
-    }
-
-    .second-row {
-      grid-row: 3;
-    }
+  .axisY_menu,
+  .axisX_menu,
+  .filmSelected_menu {
+    font-size: 0.8rem;
+    border: 1px solid var(--color-gray-400);
+    border-radius: 0.25rem;
   }
+
+  .filmSelected_reset {
+    margin-top: 0.5rem;
+    padding: 0.2rem 0.5rem;
+    font-size: 0.8rem;
+    border: 1px solid var(--color-gray-300);
+    border-radius: 0.25rem;
+    background-color: var(--color-gray-100);
+    cursor: pointer;
+  }
+
+  .filmSelected_text {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
   .chart-container {
-    flex: 1; /* Take up remaining space */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 0; /* Allow the container to shrink if needed */
+    position: relative;
+    flex-grow: 1;
+    min-height: 0;
+    overflow: hidden;
+    /* align-self: flex-start; */
   }
+
+  @media screen and (max-width: 768px) {
+    .grid-container {
+      flex-direction: column;
+      overflow-y: auto;
+    }
+
+    .left-column,
+    .right-column {
+      width: 100%;
+    }
+
+    .footnote-container-desktop {
+      display: none;
+    }
+  }
+  /* Chart styles */
 
   circle {
     transition:
@@ -363,6 +419,11 @@ ajouter axes
 
   circle:focus {
     outline: none;
+  }
+
+  .annotation_title {
+    font-size: 0.7rem;
+    color: var(--color-gray-900);
   }
 
   .annotation_chart {

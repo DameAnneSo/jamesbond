@@ -99,52 +99,77 @@ small {
 }
 
 h1 {
-  font-size: 1.5rem;
+  font-size: 1.5rem; /* 24px */
 }
 
 h2 {
-  font-size: 1.125rem;
+  font-size: 1.25rem; /* 20px */
 }
 
 h3 {
-  font-size: 1.125rem;
+  font-size: 1.125rem; /* 18px */
 }
 
 h4 {
-  font-size: 1.125rem;
+  font-size: 1rem; /* 16px */
 }
 
 h5 {
-  font-size: 0.8rem;
+  font-size: 0.875rem; /* 14px */
   font-weight: 500;
   color: var(--clr-grey-9);
+}
+
+h6 {
+  font-size: 0.75rem; /* 12px */
 }
 
 p {
   margin-bottom: 1rem;
   color: var(--clr-grey-7);
-  font-size: 0.9em;
+  font-size: 0.7rem; /* 16px */
 }
 
-@media screen and (min-width: 800px) {
+small {
+  font-size: 0.75rem; /* 12px */
+}
+
+/* Media query for larger screens */
+@media screen and (min-width: 768px) {
+  :root {
+    font-size: 18px; /* Slightly larger base font size for larger screens */
+  }
+
   h1 {
-    font-size: 2.125rem;
+    font-size: 2rem; /* 36px */
   }
 
   h2 {
-    font-size: 1.875rem;
+    font-size: 1.5rem; /* 27px */
   }
 
   h3 {
-    font-size: 1.15rem;
+    font-size: 1.25rem; /* 22.5px */
   }
 
   h4 {
-    font-size: 1.125rem;
+    font-size: 1.125rem; /* 20.25px */
   }
 
-  body {
-    font-size: 1rem;
+  h5 {
+    font-size: 1rem; /* 18px */
+  }
+
+  h6 {
+    font-size: 0.875rem; /* 15.75px */
+  }
+
+  p {
+    font-size: 0.8rem; /* 18px */
+  }
+
+  small {
+    font-size: 0.875rem; /* 15.75px */
   }
 }
 
@@ -156,24 +181,37 @@ Specific Styles
 
 .page-column {
   margin: 0 auto;
-  width: 60%; /* takes room of 60 characters */
+  width: 95%; /* takes room of 60 characters */
   height: 100%;
   max-width: 1200px; /* Limit maximum width for very large screens */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
 }
 
-@media screen and (max-width: 1024px) {
-  .page-column {
-    margin: 0 auto;
-    width: 80%;
-  }
-}
+.footnote-container-mobile {
+  display:none}
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 768px)  {
   .page-column {
-    margin: 0 auto;
-    width: 90%;
+  overflow: visible;
+  height: auto; /* Allow the column to grow in height */
+    }
+
+    .footnote-container-mobile {
+  display:block;}
+
+    .footnote-text {
+    font-size: 0.7rem;
+    color: var(--color-gray-500);
+    margin-top: auto;
+    flex-shrink: 0;
+    /* align-self: end; */
   }
-}
+
+  }
+
 
 /*
 =============== 

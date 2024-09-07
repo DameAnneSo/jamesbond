@@ -7,30 +7,62 @@
   export let width // Imported from App.svelte; represents chart width
 
   $: x = xScale(data[axisXSelected])
-  $: y = yScale(data[axisYSelected])
+  $: yPosition = yScale(data[axisYSelected])
 
   let tooltipWidth // Calculated using bind:clientWidth below
   $: xPosition = x + tooltipWidth > width ? x - tooltipWidth : x
 
-  $: console.log(x, y)
+  $: console.log(x, yPosition)
 </script>
+
+<!-- 
+<div
+  class="tooltip"
+  style="position: absolute; 
+      top: {yPosition}px; 
+      left: {xPosition}px"
+  bind:clientWidth={tooltipWidth}> -->
 
 <div
   class="tooltip"
   style="position: absolute; 
-      top: {y}px; 
-      left: {x}px"
-  bind:clientWidth={tooltipWidth}>
-  <h1>{data.title}</h1>
-  <span class="tooltip_receeded">({data.year})</span>
-  <p class="tooltip_metric">Audience scores</p>
+      top: {yPosition * 1.2}px; 
+      left: {xPosition}px">
+  <h1>{data.title} <span class="tooltip_receeded">| ({data.year}) </span></h1>
   <p>
-    <span class="tooltip_score">{data['Rotten Tomatoes users']}</span> on Rotten Tomatoes | <span class="tooltip_score">{data['IMDB users']}</span> on IMDBbased on {data.rating_IMDB_numbers}
-    votes
+    <span class="tooltip_receeded"
+      >({data.year}) ${data.box_office_adjusted}M in box office adjusted 2005 <br />
+      (${data.box_office_actual}M in real box office in dollars)</span>
   </p>
-  <p class="tooltip_metric">Juries scores</p>
-  <p><span class="tooltip_score">{data['Rotten Tomatoes critics']}</span> on Rotten Tomatoes | <span class="tooltip_score">{data['IMDB critics']} </span>on IMDB</p>
-  <p><span class="tooltip_receeded">${data.box_office_adjusted}M in box office adjusted 2005 | (${data.box_office_actual}M in real box office in dollars)</span></p>
+  <table>
+    <thead>
+      <tr>
+        <th class="tooltip_metric"></th>
+        <th class="tooltip_metric">Audience Score</th>
+        <th class="tooltip_metric">Juries Score</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="tooltip_metric">Rotten Tomatoes</td>
+        <td>
+          <span class="tooltip_score">{data['Rotten Tomatoes users']}</span><span class="tooltip_receeded">/100</span>
+        </td>
+        <td>
+          <span class="tooltip_score">{data['Rotten Tomatoes critics']}</span><span class="tooltip_receeded">/100</span>
+        </td>
+      </tr>
+      <tr>
+        <td class="tooltip_metric">IMDB</td>
+        <td>
+          <span class="tooltip_score">{data['IMDB users']}</span><span class="tooltip_receeded">/100</span>
+        </td>
+        <td>
+          <span class="tooltip_score">{data['IMDB critics']}</span><span class="tooltip_receeded">/100</span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>
 
 <style>
@@ -45,6 +77,12 @@
       left 300ms ease;
   }
 
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+  }
+
   p {
     margin: 0;
     font-size: 0.7rem;
@@ -57,6 +95,8 @@
   }
   .tooltip_receeded {
     font-size: 0.6rem;
+    margin: 0rem;
+    line-height: 0rem;
   }
 
   .tooltip_score {
@@ -67,5 +107,7 @@
   .tooltip_metric {
     font-style: italic;
     color: var(--color-gray-500);
+    font-size: 0.6rem;
+    font-weight: lighter;
   }
 </style>
