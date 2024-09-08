@@ -249,7 +249,7 @@
         </g>
       </svg>
       {#if hoveredData}
-        <Tooltip data={hoveredData} {xScale} {yScale} {axisXSelected} {axisYSelected} {width} {xPosition} {yPosition} {handleMouseMove} />
+        <Tooltip data={hoveredData} {xScale} {yScale} {axisXSelected} {axisYSelected} {width} {xPosition} {yPosition} {height} />
       {/if}
     </div>
   </div>
