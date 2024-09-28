@@ -19,6 +19,7 @@ Variables
   --color-black: #030712;
   /* Primary / Accent Colors */
   --color-main: #f5b301;
+  --color-accent:
   /* Light Pink Shades */
   --color-main-dark: #ec9c04;
   --color-main-light: #fed053;
@@ -29,8 +30,8 @@ Variables
   --green-dark: #0f5132; */
 
   /* fonts */
-  --ff-primary: 'Atma', sans-serif;
-  --ff-secondary: 'Verdana', sans-serif;
+  --ff-primary: 'Odibee Sans', sans-serif;
+  --ff-secondary: 'Montserrat', sans-serif;
 
   /* others */
   --transition: all 0.3s linear;
@@ -41,6 +42,11 @@ Variables
   --max-width: 1170px;
 }
 
+.odibee-sans-regular {
+  font-family: "Odibee Sans", system-ui;
+  font-weight: 400;
+  font-style: normal;
+}
 /*
 =============== 
 Global Styles
@@ -99,19 +105,19 @@ small {
 }
 
 h1 {
-  font-size: 1.5rem; /* 24px */
+  font-size: 3rem; /* 24px */
 }
 
 h2 {
-  font-size: 1.25rem; /* 20px */
+  font-size: 1.5rem; /* 20px */
 }
 
 h3 {
-  font-size: 1.125rem; /* 18px */
+  font-size: 1.25rem; /* 18px */
 }
 
 h4 {
-  font-size: 1rem; /* 16px */
+  font-size: 1.1rem; /* 16px */
 }
 
 h5 {
@@ -141,7 +147,7 @@ small {
   }
 
   h1 {
-    font-size: 2rem; /* 36px */
+    font-size: 3rem; /* 36px */
   }
 
   h2 {

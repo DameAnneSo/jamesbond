@@ -92,11 +92,15 @@
       hasDrawn = true
     }, 500)
 
-    // Add the x-axis
-    select('g.axisX').attr('transform', `translate(0,${height})`).call(axisBottom(xScale))
+    // Custom tick format function
+    // const customTickFormat = d => (d === 100 ? `${d}% approved` : d)
+    const customTickFormat = d => `${d}%`
 
-    // Add the y-axis, remove the domain line, add grid lines and a label.
-    select('g.axisY').call(axisLeft(yScale))
+    // Add the x-axis
+    select('g.axisX').attr('transform', `translate(0,${height})`).call(axisBottom(xScale).tickFormat(customTickFormat))
+
+    // Add the y-axis
+    select('g.axisY').call(axisLeft(yScale).tickFormat(customTickFormat))
 
     // Attach the mousemove event listener to the SVG or container element
     select('svg').on('mousemove', handleMouseMove)
@@ -112,9 +116,6 @@
   function handleMouseMove(event) {
     const cursorX = event.clientX
     const cursorY = event.clientY
-
-    // xPosition = cursorX + tooltipWidth > width ? cursorX - tooltipWidth : cursorX
-    // yPosition = cursorY + 20 // Adjust the value to position the tooltip just below the cursor
   }
   // TEST CONSOLE LOGS
   // console.log(hasDrawn)
@@ -125,25 +126,26 @@
   // $: console.log('hoveredData', hoveredData)
   // $: console.log(axisXSelected, "is axis X")
   // $: console.log(axisYSelected, "is axis Y")
-  // $: console.log(filmSelected, 'is film selected')
+  $: console.log(filmSelected, 'is film selected')
 </script>
 
 <!-- menus -->
-<h1 class="title">The Bond Ratings Conundrum</h1>
+<h1 class="title">The Movie Ratings Conundrum</h1>
 <div class="grid-container">
   <div class="left-column">
     <div class="intro-text">
       <p>
-        Every time I am about to watch a film online, I check the overall ratings first. But should I consider all the different metrics available, or do they tend to align?
+        Every time I am about to watch a film, I check the ratings online first. But there so many metrics available! <br />Do Rotten Tomatoes and IMDB ratings align? <br />Are
+        expert critics and the general audience in agreement?
         <br />
-        Let's conduct a test with a limited dataset: the James Bond films. Are critics and the general audience in agreement? Do Rotten Tomatoes and IMDB ratings align? Dive into the
-        data yourself with this chart and filters.
+        <br />
+        Let's conduct a test with the James Bond films.
       </p>
     </div>
     <div class="controllers-section">
       <div class="controller-container">
         <div class="controller-Y">
-          <p class="controller_text">Select your metrics: vertical axis</p>
+          <p class="controller_text">Select what metric to display on the vertical axis</p>
           <select bind:value={axisYSelected} class="axisY_menu">
             {#each axesOptions as axisYOption}
               {#if axisYOption !== axisXSelected}
@@ -151,6 +153,11 @@
               {/if}
             {/each}
           </select>
+          {#each metricsData as metric}
+            {#if axisYSelected === metric.metric_label}
+              <p class="explanation_text">called {metric.metric_name}: {metric.metric_short_explanation}</p>
+            {/if}
+          {/each}
         </div>
 
         <div class="controller-X">
@@ -162,6 +169,12 @@
               {/if}
             {/each}
           </select>
+          <!-- if axisXSelected corresponds, create a p with metric_name and short_explanation-->
+          {#each metricsData as metric}
+            {#if axisXSelected === metric.metric_label}
+              <p class="explanation_text">called {metric.metric_name}: {metric.metric_short_explanation}</p>
+            {/if}
+          {/each}
         </div>
         <div class="controller-film">
           <p class="controller_text">highlight a movie</p>
@@ -185,6 +198,8 @@
     </div>
   </div>
   <div class="right-column">
+    <p class="controller_text middle_text text_desktop">Each bubble is a film. Hover for details</p>
+    <p class="controller_text middle_text middle_text text_mobile">Each bubble is a film. Click for details</p>
     <!-- scatterplot -->
     <div
       class="chart-container"
@@ -201,33 +216,46 @@
             <line x1={xScale(0)} y1={yScale(0)} x2={xScale(100)} y2={yScale(100)} stroke="black" stroke-width="0.5" />
           </g>
           <g>
-            <text x="30" y="300" text-anchor="middle" transform="rotate(-45)" class="annotation_chart">
+            <text x="30" y="297.5" text-anchor="middle" transform="rotate(-45)" class="annotation_chart">
               <tspan x="320" dy="1.2em" text-anchor="end">equal</tspan>
               <tspan x="320" dy="1.2em" text-anchor="end">appreciation</tspan></text>
           </g>
 
           <g>
-            <text y="3" text-anchor="start">
-              {#each metricsData as metric}
-                {#if axisYSelected === metric.metric_label}
-                  <tspan class="annotation_title" x="5" dy="1.2em">{metric.metric_name}</tspan>
-                  <tspan class="annotation_chart" x="5" dy="1.2em"> {metric.metric_short_explanation}</tspan>
-                {/if}
-              {/each}
-            </text>
+            {#each metricsData as metric}
+              {#if axisYSelected === metric.metric_label}
+                <text x="5" y="10" text-anchor="start" class="annotation_title">
+                  {metric.metric_label}
+                </text>
+              {/if}
+            {/each}
           </g>
 
           <g>
-            <text y="400" text-anchor="end">
-              {#each metricsData as metric}
-                {#if axisXSelected === metric.metric_label}
-                  <tspan class="annotation_title" x="440" dy="1.2em">{metric.metric_name}</tspan>
-                  <tspan class="annotation_chart" x="440" dy="1.2em"> {metric.metric_short_explanation}</tspan>
-                {/if}
-              {/each}
-            </text>
+            {#each metricsData as metric}
+              {#if axisXSelected === metric.metric_label}
+                <text y="430" x="440" text-anchor="end" class="annotation_title">
+                  {metric.metric_label}
+                </text>
+              {/if}
+            {/each}
           </g>
 
+          <g>
+            {#each metricsData as metric}
+              {#if axisYSelected === metric.metric_label}
+                <text x="30" y="150" text-anchor="middle" transform="rotate(-45)" class="annotation_chart"> more appreciated by {metric.metric_label} </text>
+              {/if}
+            {/each}
+          </g>
+
+          <g>
+            {#each metricsData as metric}
+              {#if axisXSelected === metric.metric_label}
+                <text x="50" y="500" text-anchor="middle" transform="rotate(-45)" class="annotation_chart"> more appreciated by {metric.metric_label} </text>
+              {/if}
+            {/each}
+          </g>
           <!-- add marks -->
           <g class="inner-chart">
             {#each data.sort((a, b) => a.axisXSelected - b.axisXSelected) as datum}
@@ -255,48 +283,55 @@
   </div>
 </div>
 
-<!--  
-TO DO 
-1/ fix the tooltip position 
+<!-- 
+/* 
 
 2/ on my own: work on css and formatting
 
 3/add favicon website
 
-4/ working on github? ASK GOOGLE 
-see: https://github.com/orgs/community/discussions/21853
-and https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site#publishing-with-a-custom-github-actions-workflow
+// Calculate Pearson correlation coefficient
+const pearsonCorrelation = (x, y) => {
+    const n = x.length;
+    const sumX = x.reduce((a, b) => a + b, 0);
+    const sumY = y.reduce((a, b) => a + b, 0);
+    const sumXY = x.map((xi, i) => xi * y[i]).reduce((a, b) => a + b, 0);
+    const sumX2 = x.map(xi => xi * xi).reduce((a, b) => a + b, 0);
+    const sumY2 = y.map(yi => yi * yi).reduce((a, b) => a + b, 0);
 
-5/ try?
-const data = await d3.dsv(",", "example.csv", (d) => {
-  return {
-    year: new Date(+d.Year, 0, 1), // convert "Year" column to Date
-    make: d.Make,
-    model: d.Model,
-    length: +d.Length // convert "Length" column to number
-  };
-});  
+    const numerator = (n * sumXY) - (sumX * sumY);
+    const denominator = Math.sqrt((n * sumX2 - sumX * sumX) * (n * sumY2 - sumY * sumY));
 
-LAYERCAKE 
-regarder la doc
-ajouter line 
-ajouter axes 
- -->
+    return numerator / denominator;
+};
+
+const corrAudience = pearsonCorrelation(normalizedImdbAudience, rtAudience);
+const corrJury = pearsonCorrelation(normalizedImdbJury, rtJury);
+
+// Compute alignment score
+const alignmentScore = (Math.abs(corrAudience) + Math.abs(corrJury)) / 2;
+
+console.log(`Alignment Score: ${alignmentScore}`);
+This JavaScript code will calculate the alignment score based on the correlation between the audience and jury scores from IMDB and Rotten Tomatoes.
+
+Interpreting the Alignment Score
+The alignment score is a measure of how well the ratings from different sources align with each other. Here's how to interpret it:
+
+Alignment Score close to 1: This indicates a strong positive correlation, meaning that the ratings from different sources are highly aligned. If one source rates a movie highly, the other source is likely to do the same.
+Alignment Score close to 0: This indicates no correlation, meaning that the ratings from different sources do not have a consistent relationship. High ratings from one source do not predict high or low ratings from the other.
+Alignment Score close to -1: This indicates a strong negative correlation, meaning that the ratings from different sources are inversely related. If one source rates a movie highly, the other source is likely to rate it low.
+*/
+
+TO DO in the future 
+1/ fix the tooltip position 
+2/ flip the chart by -90 degrees
+  -->
 
 <style>
   .title {
     width: 100%;
     text-align: left;
     margin-bottom: 1rem;
-  }
-
-  .footnote-text {
-    font-size: 0.6rem;
-    color: var(--color-gray-500);
-    margin-top: auto;
-
-    flex-shrink: 0;
-    /* align-self: end; */
   }
 
   .grid-container {
@@ -312,11 +347,18 @@ ajouter axes
     flex-direction: column;
     margin-right: 2rem;
     justify-content: space-between;
+    align-items: stretch;
   }
 
   .intro-text {
     margin-bottom: 0rem;
     text-wrap: balance;
+  }
+
+  .footnote-text {
+    font-size: 0.6rem;
+    color: var(--color-gray-500);
+    /* align-self: flex-end; */
   }
 
   .right-column {
@@ -339,9 +381,19 @@ ajouter axes
     font-size: 0.8rem;
     color: var(--color-gray-500);
     margin-bottom: 0;
-    font-style: italic;
+    /* font-style: italic; */
   }
 
+  .middle_text {
+    text-align: center;
+  }
+
+  .explanation_text {
+    font-size: 0.6rem;
+    color: var(--color-gray-500);
+    margin-bottom: 0;
+    font-style: italic;
+  }
   .axisY_menu,
   .axisX_menu,
   .filmSelected_menu {
@@ -389,6 +441,20 @@ ajouter axes
       display: none;
     }
   }
+  .text_mobile {
+    display: none;
+  }
+
+  @media screen and (max-width: 768px) {
+    .text_mobile {
+      display: block;
+    }
+
+    .text_desktop {
+      display: none;
+    }
+  }
+
   /* Chart styles */
 
   circle {
@@ -396,8 +462,8 @@ ajouter axes
       r 1000ms ease,
       transform 500ms ease-in-out,
       opacity 300ms ease,
-      cx 300ms ease,
-      cy 300ms ease;
+      cx 1000ms ease-in-out,
+      cy 1000ms ease-in-out;
     stroke: var(--color-gray-500);
     stroke-width: 1;
     /* opacity: 0.6; */
@@ -429,5 +495,25 @@ ajouter axes
   .annotation_chart {
     font-size: 0.5rem;
     color: var(--color-gray-500);
+  }
+
+  /* Keyframes for James Bond intro animation */
+  @keyframes bondIntro {
+    0% {
+      cx: 50%;
+      cy: 50%;
+      r: 0;
+      opacity: 0;
+    }
+    50% {
+      r: 50;
+      opacity: 1;
+    }
+    100% {
+      cx: var(--final-cx);
+      cy: var(--final-cy);
+      r: var(--final-r);
+      opacity: 1;
+    }
   }
 </style>
