@@ -219,15 +219,15 @@
         </div>
         <!-- put an explanation of the alignement score-->
         {#if alignmentScore > 0.8}
-          <p class="verdict_text">Verdict: the ratings are highly aligned.</p>
+          <p class="verdict_text">Verdict: the {axisXSelected} and {axisYSelected} ratings are highly aligned.</p>
         {:else if alignmentScore < -0.8}
-          <p class="verdict_text">Verdict: the ratings are inversely related.</p>
+          <p class="verdict_text">erdict: the {axisXSelected} and {axisYSelected} are inversely related.</p>
         {:else}
-          <p class="verdict_text">Verdict: the ratings are not consistently aligned.</p>
+          <p class="verdict_text">Verdict: the {axisXSelected} and {axisYSelected} are not consistently aligned.</p>
         {/if}
         <p class="explanation_text">Alignment Score (Pearson correlation): {alignmentScore.toFixed(2)}</p>
         <div class="controller-film">
-          <p class="controller_text"><br>highlight a movie</p>
+          <p class="controller_text"><br />highlight a movie</p>
           <select bind:value={filmSelected} class="filmSelected_menu">
             {#each filmOptions as filmOption}
               <option>{filmOption}</option>
@@ -414,7 +414,7 @@ TO DO in the future
 
   .verdict_text {
     margin-bottom: 0;
-    font-size: 1rem;
+    /* font-size: 1rem; */
   }
   .explanation_text {
     font-size: 0.6rem;
