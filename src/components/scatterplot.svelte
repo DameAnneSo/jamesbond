@@ -117,6 +117,48 @@
     const cursorX = event.clientX
     const cursorY = event.clientY
   }
+
+  // Calculate Pearson correlation coefficient: will calculate the alignment score based on the correlation between the metrics selected
+
+  let alignmentScore
+
+  const pearsonCorrelation = (x, y) => {
+    const n = x.length
+    const sumX = x.reduce((a, b) => a + b, 0)
+    const sumY = y.reduce((a, b) => a + b, 0)
+    const sumXY = x.map((xi, i) => xi * y[i]).reduce((a, b) => a + b, 0)
+    const sumX2 = x.map(xi => xi * xi).reduce((a, b) => a + b, 0)
+    const sumY2 = y.map(yi => yi * yi).reduce((a, b) => a + b, 0)
+
+    const numerator = n * sumXY - sumX * sumY
+    const denominator = Math.sqrt((n * sumX2 - sumX * sumX) * (n * sumY2 - sumY * sumY))
+
+    return numerator / denominator
+  }
+
+  // Compute alignment score of the ratings selected
+  $: alignmentScore = pearsonCorrelation(
+    data.map(d => d[axisXSelected]),
+    data.map(d => d[axisYSelected])
+  )
+
+  // Interpreting the Alignment Score
+  // Alignment Score close to 1: This indicates a strong positive correlation, meaning that the ratings from different sources are highly aligned. If one source rates a movie highly, the other source is likely to do the same.
+  // Alignment Score close to 0: This indicates no correlation, meaning that the ratings from different sources do not have a consistent relationship. High ratings from one source do not predict high or low ratings from the other.
+  // Alignment Score close to -1: This indicates a strong negative correlation, meaning that the ratings from different sources are inversely related. If one source rates a movie highly, the other source is likely to rate it low.
+
+  // Display alignment messages
+  $: {
+    console.log(`Alignment Score: ${alignmentScore}`)
+    if (alignmentScore > 0.8) {
+      console.log(`The ratings from ${axisXSelected} and ${axisYSelected} are highly aligned.`)
+    } else if (alignmentScore < -0.8) {
+      console.log(`The ratings from ${axisXSelected} and ${axisYSelected} are inversely related.`)
+    } else {
+      console.log(`The ratings from ${axisXSelected} and ${axisYSelected} are not consistently aligned.`)
+    }
+  }
+
   // TEST CONSOLE LOGS
   // console.log(hasDrawn)
   // console.log(dataRaw)
@@ -126,7 +168,7 @@
   // $: console.log('hoveredData', hoveredData)
   // $: console.log(axisXSelected, "is axis X")
   // $: console.log(axisYSelected, "is axis Y")
-  $: console.log(filmSelected, 'is film selected')
+  // $: console.log(filmSelected, 'is film selected')
 </script>
 
 <!-- menus -->
@@ -138,14 +180,13 @@
         Every time I am about to watch a film, I check the ratings online first. But there so many metrics available! <br />Do Rotten Tomatoes and IMDB ratings align? <br />Are
         expert critics and the general audience in agreement?
         <br />
-        <br />
         Let's conduct a test with the James Bond films.
       </p>
     </div>
     <div class="controllers-section">
       <div class="controller-container">
         <div class="controller-Y">
-          <p class="controller_text">Select what metric to display on the vertical axis</p>
+          <p class="controller_text">Select the ratings on the vertical axis</p>
           <select bind:value={axisYSelected} class="axisY_menu">
             {#each axesOptions as axisYOption}
               {#if axisYOption !== axisXSelected}
@@ -155,7 +196,7 @@
           </select>
           {#each metricsData as metric}
             {#if axisYSelected === metric.metric_label}
-              <p class="explanation_text">called {metric.metric_name}: {metric.metric_short_explanation}</p>
+              <p class="explanation_text">aka {metric.metric_name}: {metric.metric_short_explanation}</p>
             {/if}
           {/each}
         </div>
@@ -172,12 +213,21 @@
           <!-- if axisXSelected corresponds, create a p with metric_name and short_explanation-->
           {#each metricsData as metric}
             {#if axisXSelected === metric.metric_label}
-              <p class="explanation_text">called {metric.metric_name}: {metric.metric_short_explanation}</p>
+              <p class="explanation_text">aka {metric.metric_name}: {metric.metric_short_explanation}</p>
             {/if}
           {/each}
         </div>
+        <!-- put an explanation of the alignement score-->
+        {#if alignmentScore > 0.8}
+          <p class="verdict_text">Verdict: the ratings are highly aligned.</p>
+        {:else if alignmentScore < -0.8}
+          <p class="verdict_text">Verdict: the ratings are inversely related.</p>
+        {:else}
+          <p class="verdict_text">Verdict: the ratings are not consistently aligned.</p>
+        {/if}
+        <p class="explanation_text">Alignment Score (Pearson correlation): {alignmentScore.toFixed(2)}</p>
         <div class="controller-film">
-          <p class="controller_text">highlight a movie</p>
+          <p class="controller_text"><br>highlight a movie</p>
           <select bind:value={filmSelected} class="filmSelected_menu">
             {#each filmOptions as filmOption}
               <option>{filmOption}</option>
@@ -198,8 +248,11 @@
     </div>
   </div>
   <div class="right-column">
-    <p class="controller_text middle_text text_desktop">Each bubble is a film. Hover for details</p>
-    <p class="controller_text middle_text middle_text text_mobile">Each bubble is a film. Click for details</p>
+    <div class="chart_title_text">
+      <p class="explanation_text controller_text middle_text text_desktop">Each bubble is a film. Hover for details</p>
+      <p class="explanation_text controller_text middle_text middle_text text_mobile">Each bubble is a film. Click for details</p>
+    </div>
+
     <!-- scatterplot -->
     <div
       class="chart-container"
@@ -216,9 +269,9 @@
             <line x1={xScale(0)} y1={yScale(0)} x2={xScale(100)} y2={yScale(100)} stroke="black" stroke-width="0.5" />
           </g>
           <g>
-            <text x="30" y="297.5" text-anchor="middle" transform="rotate(-45)" class="annotation_chart">
-              <tspan x="320" dy="1.2em" text-anchor="end">equal</tspan>
-              <tspan x="320" dy="1.2em" text-anchor="end">appreciation</tspan></text>
+            <text y="297.5" text-anchor="middle" class="annotation_chart" transform="rotate(-45)">
+              <tspan x="-285" dy="1.2em" text-anchor="start">equal</tspan>
+              <tspan x="-285" dy="1.2em" text-anchor="start">appreciation</tspan></text>
           </g>
 
           <g>
@@ -244,7 +297,7 @@
           <g>
             {#each metricsData as metric}
               {#if axisYSelected === metric.metric_label}
-                <text x="30" y="150" text-anchor="middle" transform="rotate(-45)" class="annotation_chart"> more appreciated by {metric.metric_label} </text>
+                <text x="30" y="150" text-anchor="middle" transform="rotate(-45)" class="annotation_chart"> ↑ more appreciated by {metric.metric_label} </text>
               {/if}
             {/each}
           </g>
@@ -252,7 +305,7 @@
           <g>
             {#each metricsData as metric}
               {#if axisXSelected === metric.metric_label}
-                <text x="50" y="500" text-anchor="middle" transform="rotate(-45)" class="annotation_chart"> more appreciated by {metric.metric_label} </text>
+                <text x="50" y="500" text-anchor="middle" transform="rotate(-45)" class="annotation_chart"> ↓ more appreciated by {metric.metric_label} </text>
               {/if}
             {/each}
           </g>
@@ -290,36 +343,7 @@
 
 3/add favicon website
 
-// Calculate Pearson correlation coefficient
-const pearsonCorrelation = (x, y) => {
-    const n = x.length;
-    const sumX = x.reduce((a, b) => a + b, 0);
-    const sumY = y.reduce((a, b) => a + b, 0);
-    const sumXY = x.map((xi, i) => xi * y[i]).reduce((a, b) => a + b, 0);
-    const sumX2 = x.map(xi => xi * xi).reduce((a, b) => a + b, 0);
-    const sumY2 = y.map(yi => yi * yi).reduce((a, b) => a + b, 0);
 
-    const numerator = (n * sumXY) - (sumX * sumY);
-    const denominator = Math.sqrt((n * sumX2 - sumX * sumX) * (n * sumY2 - sumY * sumY));
-
-    return numerator / denominator;
-};
-
-const corrAudience = pearsonCorrelation(normalizedImdbAudience, rtAudience);
-const corrJury = pearsonCorrelation(normalizedImdbJury, rtJury);
-
-// Compute alignment score
-const alignmentScore = (Math.abs(corrAudience) + Math.abs(corrJury)) / 2;
-
-console.log(`Alignment Score: ${alignmentScore}`);
-This JavaScript code will calculate the alignment score based on the correlation between the audience and jury scores from IMDB and Rotten Tomatoes.
-
-Interpreting the Alignment Score
-The alignment score is a measure of how well the ratings from different sources align with each other. Here's how to interpret it:
-
-Alignment Score close to 1: This indicates a strong positive correlation, meaning that the ratings from different sources are highly aligned. If one source rates a movie highly, the other source is likely to do the same.
-Alignment Score close to 0: This indicates no correlation, meaning that the ratings from different sources do not have a consistent relationship. High ratings from one source do not predict high or low ratings from the other.
-Alignment Score close to -1: This indicates a strong negative correlation, meaning that the ratings from different sources are inversely related. If one source rates a movie highly, the other source is likely to rate it low.
 */
 
 TO DO in the future 
@@ -337,12 +361,12 @@ TO DO in the future
   .grid-container {
     display: flex;
     flex-grow: 1;
-    gap: 0.5rem;
+    gap: 0rem;
     overflow: hidden;
   }
 
   .left-column {
-    width: 33%;
+    width: 40%;
     display: flex;
     flex-direction: column;
     margin-right: 2rem;
@@ -362,7 +386,7 @@ TO DO in the future
   }
 
   .right-column {
-    width: 67%;
+    width: 60%;
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -384,14 +408,19 @@ TO DO in the future
     /* font-style: italic; */
   }
 
-  .middle_text {
+  .chart_title_text p {
     text-align: center;
   }
 
+  .verdict_text {
+    margin-bottom: 0;
+    font-size: 1rem;
+  }
   .explanation_text {
     font-size: 0.6rem;
     color: var(--color-gray-500);
     margin-bottom: 0;
+    margin-top: 0;
     font-style: italic;
   }
   .axisY_menu,
