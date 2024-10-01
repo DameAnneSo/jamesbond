@@ -84,7 +84,7 @@
 
 <style>
   .tooltip {
-    background-color: white;
+    background-color: var(--color-gray-800);
     border: 1px solid var(--color-gray-500);
     padding: 6px;
     border-radius: 3px;
@@ -101,6 +101,11 @@
     padding: 1rem;
   }
 
+  th,
+  td {
+    padding: 1px 3px;
+  }
+
   h1 {
     font-size: 1.5rem;
     margin: 0;
@@ -110,7 +115,7 @@
     font-size: 0.6rem;
     margin: 0rem;
     line-height: 0rem;
-    color: var(--color-gray-500);
+    color: var(--color-gray-200);
     font-family: var(--ff-secondary);
   }
 
@@ -122,7 +127,7 @@
 
   .tooltip_metric {
     font-style: italic;
-    color: var(--color-gray-500);
+    color: var(--color-gray-300);
     font-size: 0.6rem;
     font-weight: lighter;
   }

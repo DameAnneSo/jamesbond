@@ -45,11 +45,11 @@
     source: d.source
   }))
 
-  let colourDictionary = {
-    'EON': 'var(--color-main)',
-    'Famous Artists Productions': 'gray-400',
-    'Taliafilm': 'gray-900'
-  }
+  // let colourDictionary = {
+  //   'EON': 'var(--color-main)',
+  //   'Famous Artists Productions': 'gray-400',
+  //   'Taliafilm': 'gray-900'
+  // }
 
   // Options drop down menu
   let axesOptions = ['IMDB users', 'IMDB critics', 'Rotten Tomatoes critics', 'Rotten Tomatoes users']
@@ -218,14 +218,16 @@
           {/each}
         </div>
         <!-- put an explanation of the alignement score-->
-        {#if alignmentScore > 0.8}
-          <p class="verdict_text">Verdict: the {axisXSelected} and {axisYSelected} ratings are highly aligned.</p>
-        {:else if alignmentScore < -0.8}
-          <p class="verdict_text">erdict: the {axisXSelected} and {axisYSelected} are inversely related.</p>
-        {:else}
-          <p class="verdict_text">Verdict: the {axisXSelected} and {axisYSelected} are not consistently aligned.</p>
-        {/if}
-        <p class="explanation_text">Alignment Score (Pearson correlation): {alignmentScore.toFixed(2)}</p>
+        <div class="verdict_section">
+          {#if alignmentScore > 0.8}
+            <p class="verdict_text">Verdict: the {axisXSelected} and {axisYSelected} ratings are highly aligned.</p>
+          {:else if alignmentScore < -0.8}
+            <p class="verdict_text">erdict: the {axisXSelected} and {axisYSelected} are inversely related.</p>
+          {:else}
+            <p class="verdict_text">Verdict: the {axisXSelected} and {axisYSelected} are not consistently aligned.</p>
+          {/if}
+          <p class="explanation_text explanation_verdict">Alignment Score (Pearson correlation): {alignmentScore.toFixed(2)}</p>
+        </div>
         <div class="controller-film">
           <p class="controller_text"><br />highlight a movie</p>
           <select bind:value={filmSelected} class="filmSelected_menu">
@@ -261,12 +263,14 @@
       }}>
       <svg height="100%" width="100%" id="scatterplot" viewBox="0 0 500 500" preserveAspectRatio="xMidYMid meet">
         <g transform="translate({margin.left}, {margin.top})">
+          <!-- add a square background but only on the space between the axis-->
+          <rect x="0" y="0" {width} {height} fill="var(--color-gray-950)" />
           <!-- adding the axes -->
           <g class="axisX"></g>
           <g class="axisY"></g>
           <!-- adding a diagonal line -->
           <g class="diagonal_line">
-            <line x1={xScale(0)} y1={yScale(0)} x2={xScale(100)} y2={yScale(100)} stroke="black" stroke-width="0.5" />
+            <line x1={xScale(0)} y1={yScale(0)} x2={xScale(100)} y2={yScale(100)} />
           </g>
           <g>
             <text y="297.5" text-anchor="middle" class="annotation_chart" transform="rotate(-45)">
@@ -277,7 +281,7 @@
           <g>
             {#each metricsData as metric}
               {#if axisYSelected === metric.metric_label}
-                <text x="5" y="10" text-anchor="start" class="annotation_title">
+                <text x="10" y="15" text-anchor="start" class="annotation_title">
                   {metric.metric_label}
                 </text>
               {/if}
@@ -287,7 +291,7 @@
           <g>
             {#each metricsData as metric}
               {#if axisXSelected === metric.metric_label}
-                <text y="430" x="440" text-anchor="end" class="annotation_title">
+                <text y="430" x="430" text-anchor="end" class="annotation_title">
                   {metric.metric_label}
                 </text>
               {/if}
@@ -297,7 +301,7 @@
           <g>
             {#each metricsData as metric}
               {#if axisYSelected === metric.metric_label}
-                <text x="30" y="150" text-anchor="middle" transform="rotate(-45)" class="annotation_chart"> ↑ more appreciated by {metric.metric_label} </text>
+                <text x="15" y="150" text-anchor="middle" transform="rotate(-45)" class="annotation_chart"> ↑ more appreciated by {metric.metric_label} </text>
               {/if}
             {/each}
           </g>
@@ -305,7 +309,7 @@
           <g>
             {#each metricsData as metric}
               {#if axisXSelected === metric.metric_label}
-                <text x="50" y="500" text-anchor="middle" transform="rotate(-45)" class="annotation_chart"> ↓ more appreciated by {metric.metric_label} </text>
+                <text x="15" y="470" text-anchor="middle" transform="rotate(-45)" class="annotation_chart"> ↓ more appreciated by {metric.metric_label} </text>
               {/if}
             {/each}
           </g>
@@ -320,8 +324,8 @@
                 style:transform-origin={`${cx}px ${cy}px`}
                 {cx}
                 {cy}
-                r={hasDrawn ? rScale(datum.box_office_adjusted) : 0}
-                fill="red"
+                r={hasDrawn ? 5 : 0}
+                fill={'var(--color-main)'}
                 on:mouseover={() => (hoveredData = datum)}
                 on:focus={() => (hoveredData = datum)}
                 tabIndex="0" />
@@ -337,15 +341,6 @@
 </div>
 
 <!-- 
-/* 
-
-2/ on my own: work on css and formatting
-
-3/add favicon website
-
-
-*/
-
 TO DO in the future 
 1/ fix the tooltip position 
 2/ flip the chart by -90 degrees
@@ -361,7 +356,7 @@ TO DO in the future
   .grid-container {
     display: flex;
     flex-grow: 1;
-    gap: 0rem;
+    gap: 0.7rem;
     overflow: hidden;
   }
 
@@ -370,27 +365,13 @@ TO DO in the future
     display: flex;
     flex-direction: column;
     margin-right: 2rem;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: stretch;
   }
 
   .intro-text {
     margin-bottom: 0rem;
     text-wrap: balance;
-  }
-
-  .footnote-text {
-    font-size: 0.6rem;
-    color: var(--color-gray-500);
-    /* align-self: flex-end; */
-  }
-
-  .right-column {
-    width: 60%;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    /* align-items: flex-start; */
   }
 
   .controller-Y,
@@ -403,31 +384,51 @@ TO DO in the future
 
   .controller_text {
     font-size: 0.8rem;
-    color: var(--color-gray-500);
+    color: var(--color-gray-300);
     margin-bottom: 0;
     /* font-style: italic; */
   }
-
-  .chart_title_text p {
-    text-align: center;
+  .footnote-text {
+    font-size: 0.6rem;
+    color: var(--color-gray-400);
+    /* align-self: flex-end; */
   }
 
+  .right-column {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    /* align-items: flex-start; */
+  }
+
+  .verdict_section {
+    margin: 1rem 0;
+    padding: 0.5rem 1rem;
+    background-color: var(--color-main);
+  }
   .verdict_text {
     margin-bottom: 0;
+    color: var(--color-gray-950);
     /* font-size: 1rem; */
   }
   .explanation_text {
-    font-size: 0.6rem;
-    color: var(--color-gray-500);
+    font-size: 0.7rem;
+    color: var(--color-gray-400);
     margin-bottom: 0;
     margin-top: 0;
     font-style: italic;
   }
+
+  .explanation_verdict {
+    color: var(--color-gray-500);
+  }
+
   .axisY_menu,
   .axisX_menu,
   .filmSelected_menu {
     font-size: 0.8rem;
-    border: 1px solid var(--color-gray-400);
+    border: 3px solid var(--color-gray-50);
     border-radius: 0.25rem;
   }
 
@@ -449,10 +450,14 @@ TO DO in the future
 
   .chart-container {
     position: relative;
-    flex-grow: 1;
+    /* flex-grow: 1; */
     min-height: 0;
     overflow: hidden;
     /* align-self: flex-start; */
+  }
+
+  .chart_title_text p {
+    text-align: center;
   }
 
   @media screen and (max-width: 768px) {
@@ -494,8 +499,7 @@ TO DO in the future
       cx 1000ms ease-in-out,
       cy 1000ms ease-in-out;
     stroke: var(--color-gray-500);
-    stroke-width: 1;
-    /* opacity: 0.6; */
+    stroke-width: 0.5;
   }
 
   .inner-chart:has(.filmHighlighted) circle:not(.filmHighlighted) {
@@ -517,32 +521,24 @@ TO DO in the future
   }
 
   .annotation_title {
-    font-size: 0.7rem;
-    color: var(--color-gray-900);
+    font-size: 0.65rem;
+    fill: var(--color-gray-200);
   }
 
   .annotation_chart {
     font-size: 0.5rem;
+    /* stroke: var(--color-gray-100); */
+    fill: var(--color-gray-400);
+  }
+
+  .axisX,
+  .axisY {
+    font-size: 0.5rem;
     color: var(--color-gray-500);
   }
 
-  /* Keyframes for James Bond intro animation */
-  @keyframes bondIntro {
-    0% {
-      cx: 50%;
-      cy: 50%;
-      r: 0;
-      opacity: 0;
-    }
-    50% {
-      r: 50;
-      opacity: 1;
-    }
-    100% {
-      cx: var(--final-cx);
-      cy: var(--final-cy);
-      r: var(--final-r);
-      opacity: 1;
-    }
+  .diagonal_line {
+    stroke: var(--color-gray-500);
+    stroke-width: 0.5px;
   }
 </style>
