@@ -6,6 +6,7 @@
   import { axisBottom, axisLeft } from 'd3-axis'
   import dataRaw from '../data/007_data.csv'
   import metrics from '../data/007_metrics.csv'
+  import { example } from '../stores/store.js'
 
   import Tooltip from '../graphics/Tooltip.svelte'
 
@@ -172,50 +173,52 @@
 </script>
 
 <!-- menus -->
-<h1 class="title">The Movie Ratings Conundrum</h1>
-<div class="grid-container">
-  <div class="left-column">
-    <div class="intro-text">
+<h1 class="title_section">The Movie Ratings Conundrum</h1>
+<div class="grid_container">
+  <div class="left_column">
+    <div class="intro_section">
       <p>
         Every time I am about to watch a film, I check the ratings online first. But there so many metrics available! <br />Do Rotten Tomatoes and IMDB ratings align? <br />Are
-        expert critics and the general audience in agreement?
+        expert critics and the general audience in agreeme\\nt?
         <br />
         Let's conduct a test with the James Bond films.
       </p>
     </div>
     <div class="controllers-section">
       <div class="controller-container">
-        <div class="controller-Y">
-          <p class="controller_text">Select the ratings on the vertical axis</p>
-          <select bind:value={axisYSelected} class="axisY_menu">
-            {#each axesOptions as axisYOption}
-              {#if axisYOption !== axisXSelected}
-                <option>{axisYOption}</option>
+        <div class="axes_controller_section">
+          <div class="vertical_controller_section">
+            <p class="controller_text">Select the ratings on the vertical axis</p>
+            <select bind:value={axisYSelected} class="axisY_menu">
+              {#each axesOptions as axisYOption}
+                {#if axisYOption !== axisXSelected}
+                  <option>{axisYOption}</option>
+                {/if}
+              {/each}
+            </select>
+            {#each metricsData as metric}
+              {#if axisYSelected === metric.metric_label}
+                <p class="explanation_text">aka {metric.metric_name}: {metric.metric_short_explanation}</p>
               {/if}
             {/each}
-          </select>
-          {#each metricsData as metric}
-            {#if axisYSelected === metric.metric_label}
-              <p class="explanation_text">aka {metric.metric_name}: {metric.metric_short_explanation}</p>
-            {/if}
-          {/each}
-        </div>
+          </div>
 
-        <div class="controller-X">
-          <p class="controller_text">horizontal axis</p>
-          <select bind:value={axisXSelected} class="axisX_menu">
-            {#each axesOptions as axisXOption}
-              {#if axisXOption !== axisYSelected}
-                <option>{axisXOption}</option>
+          <div class="horizontal_controller_section">
+            <p class="controller_text">horizontal axis</p>
+            <select bind:value={axisXSelected} class="axisX_menu">
+              {#each axesOptions as axisXOption}
+                {#if axisXOption !== axisYSelected}
+                  <option>{axisXOption}</option>
+                {/if}
+              {/each}
+            </select>
+            <!-- if axisXSelected corresponds, create a p with metric_name and short_explanation-->
+            {#each metricsData as metric}
+              {#if axisXSelected === metric.metric_label}
+                <p class="explanation_text">aka {metric.metric_name}: {metric.metric_short_explanation}</p>
               {/if}
             {/each}
-          </select>
-          <!-- if axisXSelected corresponds, create a p with metric_name and short_explanation-->
-          {#each metricsData as metric}
-            {#if axisXSelected === metric.metric_label}
-              <p class="explanation_text">aka {metric.metric_name}: {metric.metric_short_explanation}</p>
-            {/if}
-          {/each}
+          </div>
         </div>
         <!-- put an explanation of the alignement score-->
         <div class="verdict_section">
@@ -228,36 +231,36 @@
           {/if}
           <p class="explanation_text explanation_verdict">Alignment Score (Pearson correlation): {alignmentScore.toFixed(2)}</p>
         </div>
-        <div class="controller-film">
+        <div class="film_selected_section">
           <p class="controller_text"><br />highlight a movie</p>
           <select bind:value={filmSelected} class="filmSelected_menu">
             {#each filmOptions as filmOption}
               <option>{filmOption}</option>
             {/each}
           </select>
-          <div class="filmSelected_text">
+          <div class="film_selected_text">
             <button class="filmSelected_reset" on:click={() => (filmSelected = undefined)}>Reset</button>
           </div>
         </div>
       </div>
     </div>
-    <div class="footnote-container-desktop">
-      <p class="footnote-text">
+    <div class="footer_section">
+      <p class="footer_text">
         Last update: May 2024 <br />
         Sources: IMDB, Rotten Tomatoes, Wikipedia <br />
         Author: Anne-Sophie Pereira De Sá | <a href="https://curiousdata.netlify.app/" target="_blank">Curious Data Website</a>
       </p>
     </div>
   </div>
-  <div class="right-column">
-    <div class="chart_title_text">
+  <div class="right_column">
+    <div class="header_chart_section">
       <p class="explanation_text controller_text middle_text text_desktop">Each bubble is a film. Hover for details</p>
       <p class="explanation_text controller_text middle_text middle_text text_mobile">Each bubble is a film. Click for details</p>
     </div>
 
     <!-- scatterplot -->
     <div
-      class="chart-container"
+      class="chart_container"
       on:mouseleave={() => {
         hoveredData = null
       }}>
@@ -353,14 +356,14 @@ TO DO in the future
     margin-bottom: 1rem;
   }
 
-  .grid-container {
+  .grid_container {
     display: flex;
     flex-grow: 1;
     gap: 0.7rem;
     overflow: hidden;
   }
 
-  .left-column {
+  .left_column {
     width: 40%;
     display: flex;
     flex-direction: column;
@@ -369,14 +372,14 @@ TO DO in the future
     align-items: stretch;
   }
 
-  .intro-text {
+  .intro_section {
     margin-bottom: 0rem;
     text-wrap: balance;
   }
 
-  .controller-Y,
-  .controller-X,
-  .controller-film {
+  .vertical_controller_section,
+  .horizontal_controller_section,
+  .film_selected_section {
     display: flex;
     flex-direction: column;
     margin-bottom: 0.5rem;
@@ -388,13 +391,13 @@ TO DO in the future
     margin-bottom: 0;
     /* font-style: italic; */
   }
-  .footnote-text {
+  .footer_text {
     font-size: 0.6rem;
     color: var(--color-gray-400);
     /* align-self: flex-end; */
   }
 
-  .right-column {
+  .right_column {
     width: 60%;
     display: flex;
     flex-direction: column;
@@ -442,13 +445,13 @@ TO DO in the future
     cursor: pointer;
   }
 
-  .filmSelected_text {
+  .film_selected_text {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
   }
 
-  .chart-container {
+  .chart_container {
     position: relative;
     /* flex-grow: 1; */
     min-height: 0;
@@ -456,22 +459,22 @@ TO DO in the future
     /* align-self: flex-start; */
   }
 
-  .chart_title_text p {
+  .header_chart_section p {
     text-align: center;
   }
 
   @media screen and (max-width: 768px) {
-    .grid-container {
+    .grid_container {
       flex-direction: column;
       overflow-y: auto;
     }
 
-    .left-column,
-    .right-column {
+    .left_column,
+    .right_column {
       width: 100%;
     }
 
-    .footnote-container-desktop {
+    .footer_section {
       display: none;
     }
   }
