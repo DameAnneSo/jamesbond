@@ -64,7 +64,7 @@
   let filmSelected = ''
 
   // Set the dimensions and margins of the graph
-  const margin = { top: 30, right: 30, left: 30, bottom: 30 }
+  const margin = { top: 10, right: 30, left: 30, bottom: 30 }
   let height = 500 - margin.top - margin.bottom
   let width = 500 - margin.left - margin.right
 
@@ -178,72 +178,69 @@
   <div class="left_column">
     <div class="intro_section">
       <p>
-        Every time I am about to watch a film, I check the ratings online first. But there so many metrics available! <br />Do Rotten Tomatoes and IMDB ratings align? <br />Are
-        expert critics and the general audience in agreeme\\nt?
+        Every time I am about to watch a film, I check the ratings online first. But there so many metrics available! <br />Do Rotten Tomatoes and IMDB ratings align? <br />Do
+        critics and audience agree?
         <br />
         Let's conduct a test with the James Bond films.
       </p>
     </div>
-    <div class="controllers-section">
-      <div class="controller-container">
-        <div class="axes_controller_section">
-          <div class="vertical_controller_section">
-            <p class="controller_text">Select the ratings on the vertical axis</p>
-            <select bind:value={axisYSelected} class="axisY_menu">
-              {#each axesOptions as axisYOption}
-                {#if axisYOption !== axisXSelected}
-                  <option>{axisYOption}</option>
-                {/if}
-              {/each}
-            </select>
-            {#each metricsData as metric}
-              {#if axisYSelected === metric.metric_label}
-                <p class="explanation_text">aka {metric.metric_name}: {metric.metric_short_explanation}</p>
-              {/if}
-            {/each}
-          </div>
-
-          <div class="horizontal_controller_section">
-            <p class="controller_text">horizontal axis</p>
-            <select bind:value={axisXSelected} class="axisX_menu">
-              {#each axesOptions as axisXOption}
-                {#if axisXOption !== axisYSelected}
-                  <option>{axisXOption}</option>
-                {/if}
-              {/each}
-            </select>
-            <!-- if axisXSelected corresponds, create a p with metric_name and short_explanation-->
-            {#each metricsData as metric}
-              {#if axisXSelected === metric.metric_label}
-                <p class="explanation_text">aka {metric.metric_name}: {metric.metric_short_explanation}</p>
-              {/if}
-            {/each}
-          </div>
-        </div>
-        <!-- put an explanation of the alignement score-->
-        <div class="verdict_section">
-          {#if alignmentScore > 0.8}
-            <p class="verdict_text">Verdict: the {axisXSelected} and {axisYSelected} ratings are highly aligned.</p>
-          {:else if alignmentScore < -0.8}
-            <p class="verdict_text">erdict: the {axisXSelected} and {axisYSelected} are inversely related.</p>
-          {:else}
-            <p class="verdict_text">Verdict: the {axisXSelected} and {axisYSelected} are not consistently aligned.</p>
+    <div class="axes_controller_section">
+      <div class="vertical_controller_section">
+        <p class="controller_text">Select the ratings on the vertical axis</p>
+        <select bind:value={axisYSelected} class="axisY_menu">
+          {#each axesOptions as axisYOption}
+            {#if axisYOption !== axisXSelected}
+              <option>{axisYOption}</option>
+            {/if}
+          {/each}
+        </select>
+        {#each metricsData as metric}
+          {#if axisYSelected === metric.metric_label}
+            <p class="explanation_text">aka {metric.metric_name}: {metric.metric_short_explanation}</p>
           {/if}
-          <p class="explanation_text explanation_verdict">Alignment Score (Pearson correlation): {alignmentScore.toFixed(2)}</p>
-        </div>
-        <div class="film_selected_section">
-          <p class="controller_text"><br />highlight a movie</p>
-          <select bind:value={filmSelected} class="filmSelected_menu">
-            {#each filmOptions as filmOption}
-              <option>{filmOption}</option>
-            {/each}
-          </select>
-          <div class="film_selected_text">
-            <button class="filmSelected_reset" on:click={() => (filmSelected = undefined)}>Reset</button>
-          </div>
-        </div>
+        {/each}
+      </div>
+
+      <div class="horizontal_controller_section">
+        <p class="controller_text">horizontal axis</p>
+        <select bind:value={axisXSelected} class="axisX_menu">
+          {#each axesOptions as axisXOption}
+            {#if axisXOption !== axisYSelected}
+              <option>{axisXOption}</option>
+            {/if}
+          {/each}
+        </select>
+        <!-- if axisXSelected corresponds, create a p with metric_name and short_explanation-->
+        {#each metricsData as metric}
+          {#if axisXSelected === metric.metric_label}
+            <p class="explanation_text">aka {metric.metric_name}: {metric.metric_short_explanation}</p>
+          {/if}
+        {/each}
       </div>
     </div>
+    <!-- put an explanation of the alignement score-->
+    <div class="verdict_section">
+      {#if alignmentScore > 0.8}
+        <p class="verdict_text">Verdict: the {axisXSelected} and {axisYSelected} ratings are highly aligned.</p>
+      {:else if alignmentScore < -0.8}
+        <p class="verdict_text">erdict: the {axisXSelected} and {axisYSelected} are inversely related.</p>
+      {:else}
+        <p class="verdict_text">Verdict: the {axisXSelected} and {axisYSelected} are not consistently aligned.</p>
+      {/if}
+      <p class="explanation_text explanation_verdict">Alignment Score (Pearson correlation): {alignmentScore.toFixed(2)}</p>
+    </div>
+    <div class="film_selected_section">
+      <p class="controller_text"><br />highlight a movie</p>
+      <select bind:value={filmSelected} class="filmSelected_menu">
+        {#each filmOptions as filmOption}
+          <option>{filmOption}</option>
+        {/each}
+      </select>
+      <div class="film_selected_text">
+        <button class="filmSelected_reset" on:click={() => (filmSelected = undefined)}>Reset</button>
+      </div>
+    </div>
+
     <div class="footer_section">
       <p class="footer_text">
         Last update: May 2024 <br />
@@ -254,8 +251,8 @@
   </div>
   <div class="right_column">
     <div class="header_chart_section">
-      <p class="explanation_text controller_text middle_text text_desktop">Each bubble is a film. Hover for details</p>
-      <p class="explanation_text controller_text middle_text middle_text text_mobile">Each bubble is a film. Click for details</p>
+      <p class="explanation_text controller_text middle_text text_desktop">Each bubble is James Bond film. Hover for details</p>
+      <p class="explanation_text controller_text middle_text middle_text text_mobile">Each bubble is a James Bond film. Click for details</p>
     </div>
 
     <!-- scatterplot -->
@@ -267,7 +264,7 @@
       <svg height="100%" width="100%" id="scatterplot" viewBox="0 0 500 500" preserveAspectRatio="xMidYMid meet">
         <g transform="translate({margin.left}, {margin.top})">
           <!-- add a square background but only on the space between the axis-->
-          <rect x="0" y="0" {width} {height} fill="var(--color-gray-950)" />
+          <!-- <rect x="0" y="0" {width} {height} fill="var(--color-gray-950)" /> -->
           <!-- adding the axes -->
           <g class="axisX"></g>
           <g class="axisY"></g>
@@ -276,7 +273,7 @@
             <line x1={xScale(0)} y1={yScale(0)} x2={xScale(100)} y2={yScale(100)} />
           </g>
           <g>
-            <text y="297.5" text-anchor="middle" class="annotation_chart" transform="rotate(-45)">
+            <text y="310" text-anchor="middle" class="annotation_chart" transform="rotate(-45)">
               <tspan x="-285" dy="1.2em" text-anchor="start">equal</tspan>
               <tspan x="-285" dy="1.2em" text-anchor="start">appreciation</tspan></text>
           </g>
@@ -350,10 +347,10 @@ TO DO in the future
   -->
 
 <style>
-  .title {
+  .title_section {
     width: 100%;
     text-align: left;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
   }
 
   .grid_container {
@@ -361,6 +358,17 @@ TO DO in the future
     flex-grow: 1;
     gap: 0.7rem;
     overflow: hidden;
+    /* display: grid;
+    grid-template-columns: 33% 67%;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-areas:
+    "intro_section header_chart_section"
+    "intro_section chart_container"
+    "axes_controller_section chart_container"
+    "verdict_section chart_container"
+    "film_selected_section chart_container"
+    "footer_section chart_container"; 
+   row-gap: 1rem; */
   }
 
   .left_column {
@@ -368,13 +376,19 @@ TO DO in the future
     display: flex;
     flex-direction: column;
     margin-right: 2rem;
-    justify-content: space-around;
-    align-items: stretch;
+    height: 100%;
   }
 
+  .right_column {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    height: 100%;
+  }
   .intro_section {
-    margin-bottom: 0rem;
-    text-wrap: balance;
+    margin-bottom: 1rem;
+    /* text-wrap: balance; */
   }
 
   .vertical_controller_section,
@@ -382,7 +396,7 @@ TO DO in the future
   .film_selected_section {
     display: flex;
     flex-direction: column;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0rem;
   }
 
   .controller_text {
@@ -391,22 +405,17 @@ TO DO in the future
     margin-bottom: 0;
     /* font-style: italic; */
   }
+
+  .footer_section {
+    margin-top: auto; /* This pushes the footer to the bottom */
+  }
   .footer_text {
     font-size: 0.6rem;
     color: var(--color-gray-400);
-    /* align-self: flex-end; */
-  }
-
-  .right_column {
-    width: 60%;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    /* align-items: flex-start; */
   }
 
   .verdict_section {
-    margin: 1rem 0;
+    margin: 0 0;
     padding: 0.5rem 1rem;
     background-color: var(--color-main);
   }
@@ -453,14 +462,31 @@ TO DO in the future
 
   .chart_container {
     position: relative;
-    /* flex-grow: 1; */
+    flex-grow: 1;
     min-height: 0;
     overflow: hidden;
-    /* align-self: flex-start; */
   }
 
+  .header_chart_section {
+    /* Add styles to ensure proper sizing if needed */
+    flex-shrink: 0; /* Prevents this section from shrinking */
+  }
   .header_chart_section p {
     text-align: center;
+  }
+
+  .text_mobile {
+    display: none;
+  }
+
+  @media screen and (min-width:1500px) {
+.footer_section {
+    margin-top: 2rem;
+  }
+
+  #scatterplot {
+    height: auto;
+  }
   }
 
   @media screen and (max-width: 768px) {
@@ -468,21 +494,38 @@ TO DO in the future
       flex-direction: column;
       overflow-y: auto;
     }
+    /* display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-areas:
+    "intro_section"
+    "axes_controller_section"
+    "verdict_section"
+    "header_chart_section"
+    "chart_container"
+    "film_selected_section"
+    "footer_section";  */
 
+    .left_column {
+      gap: 0rem;
+      margin-right: 0rem;
+    }
     .left_column,
     .right_column {
       width: 100%;
+    }
+    .film_selected_section {
+      margin-bottom: 0.5rem;
+      order: 1;
+    }
+
+    .verdict_section {
+      order: 2;
     }
 
     .footer_section {
       display: none;
     }
-  }
-  .text_mobile {
-    display: none;
-  }
-
-  @media screen and (max-width: 768px) {
     .text_mobile {
       display: block;
     }
