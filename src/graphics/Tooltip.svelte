@@ -45,12 +45,6 @@
 
 <div bind:this={tooltipElement} class="tooltip" style="position: absolute; left: {xPosition}px; top: {yPosition}px;">
   <h1>{data.title} <span class="tooltip_receeded"> ({data.year})</span></h1>
-  <!-- <p>
-    <span class="tooltip_receeded">
-      ${data.box_office_adjusted}M in box office adjusted 2005 <br />
-      (${data.box_office_actual}M in real box office in dollars)
-    </span>
-  </p> -->
   <table>
     <thead>
       <tr>

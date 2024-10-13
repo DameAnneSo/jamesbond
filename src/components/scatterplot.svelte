@@ -29,7 +29,6 @@
     ['IMDB users']: +d['IMDB_users'],
     rating_IMDB_numbers: d.rating_IMDB_numbers,
     length_movie: d.length_movie,
-    // data written as dd% so need to convert to number by removing % sign and converting to number
     ['Rotten Tomatoes critics']: +d['RT_critics'],
     ['Rotten Tomatoes users']: +d['RT_users'],
     Song_theme: d.Song_theme.replace(/^"(.*)"$/, '$1'),
@@ -147,18 +146,6 @@
   // Alignment Score close to 1: This indicates a strong positive correlation, meaning that the ratings from different sources are highly aligned. If one source rates a movie highly, the other source is likely to do the same.
   // Alignment Score close to 0: This indicates no correlation, meaning that the ratings from different sources do not have a consistent relationship. High ratings from one source do not predict high or low ratings from the other.
   // Alignment Score close to -1: This indicates a strong negative correlation, meaning that the ratings from different sources are inversely related. If one source rates a movie highly, the other source is likely to rate it low.
-
-  // Display alignment messages
-  $: {
-    console.log(`Alignment Score: ${alignmentScore}`)
-    if (alignmentScore > 0.8) {
-      console.log(`The ratings from ${axisXSelected} and ${axisYSelected} are highly aligned.`)
-    } else if (alignmentScore < -0.8) {
-      console.log(`The ratings from ${axisXSelected} and ${axisYSelected} are inversely related.`)
-    } else {
-      console.log(`The ratings from ${axisXSelected} and ${axisYSelected} are not consistently aligned.`)
-    }
-  }
 
   // TEST CONSOLE LOGS
   // console.log(hasDrawn)
@@ -344,6 +331,8 @@
 TO DO in the future 
 1/ fix the tooltip position 
 2/ flip the chart by -90 degrees
+3/ grid templates 
+4/ use stores (see video number 37)
   -->
 
 <style>
@@ -377,6 +366,7 @@ TO DO in the future
     flex-direction: column;
     margin-right: 2rem;
     height: 100%;
+    gap:0.75rem;
   }
 
   .right_column {
@@ -399,6 +389,9 @@ TO DO in the future
     margin-bottom: 0rem;
   }
 
+  .vertical_controller_section {
+    margin-bottom: 0.75rem;
+  }
   .controller_text {
     font-size: 0.8rem;
     color: var(--color-gray-300);
@@ -479,14 +472,14 @@ TO DO in the future
     display: none;
   }
 
-  @media screen and (min-width:1500px) {
-.footer_section {
-    margin-top: 2rem;
-  }
+  @media screen and (min-width: 1500px) {
+    .footer_section {
+      margin-top: 2rem;
+    }
 
-  #scatterplot {
-    height: auto;
-  }
+    #scatterplot {
+      height: auto;
+    }
   }
 
   @media screen and (max-width: 768px) {
