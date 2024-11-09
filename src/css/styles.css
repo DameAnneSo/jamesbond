@@ -105,7 +105,7 @@ h6 {
   color: var(--color-main);
 }
   h1 {
-    font-size: 3rem; /* 36px */
+    font-size: 4rem; /* 36px */
   }
 
   h2 {
@@ -185,38 +185,6 @@ Specific Styles
 
 body {background-color: var(--color-gray-900);}
 
-.page-column {
-  margin: 0 auto;
-  width: 95%;
-  height: 100%;
-  max-width: 1200px; /* Limit maximum width for very large screens */
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-  
-.footnote-container-mobile {
-  display:none}
-
-@media screen and (max-width: 768px)  {
-  .page-column {
-  overflow: visible;
-  height: auto; /* Allow the column to grow in height */
-    }
-
-    .footnote-container-mobile {
-  display:block;}
-
-    .footnote-text {
-    font-size: 0.7rem;
-    color: var(--color-gray-500);
-    margin-top: auto;
-    flex-shrink: 0;
-    /* align-self: end; */
-  }
-
-  }
-
 
 /*
 =============== 
@@ -224,4 +192,4 @@ Chart
 ===============
 */
 
-/* are inside the chart_svelte.svelte */
+/* are inside the scatterplot_svelte.svelte */
