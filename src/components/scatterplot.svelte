@@ -63,7 +63,7 @@
   let filmSelected = ''
 
   // Set the dimensions and margins of the graph
-  const margin = { top: 45, right: 45, left: 45, bottom: 45 }
+  const margin = { top: 10, right: 30, left: 30, bottom: 30 }
   let height = 500 - margin.top - margin.bottom
   let width = 500 - margin.left - margin.right
 
@@ -96,20 +96,15 @@
     // const customTickFormat = d => (d === 100 ? `${d}% approved` : d)
     const customTickFormat = d => `${d}%`
 
-    // Create axis generators with grid lines
-    const xAxisGrid = axisBottom(xScale).tickFormat(customTickFormat).tickSize(-height)
-
-    const yAxisGrid = axisLeft(yScale).tickFormat(customTickFormat).tickSize(-width)
-
     // Add the x-axis
-    select('g.axisX').attr('transform', `translate(0,${height})`).call(xAxisGrid) // This creates the vertical grid lines
+    select('g.axisX').attr('transform', `translate(0,${height})`).call(axisBottom(xScale).tickFormat(customTickFormat))
 
-    // Add the y-axis with grid lines
-    select('g.axisY').call(yAxisGrid).selectAll('text').attr('transform', 'rotate(90)').style('text-anchor', 'end').attr('dx', '2em').attr('dy', '1.8em')
+    // Add the y-axis
+    select('g.axisY').call(axisLeft(yScale).tickFormat(customTickFormat))
+
+    // Attach the mousemove event listener to the SVG or container element
+    select('svg').on('mousemove', handleMouseMove)
   }
-
-  // Attach the mousemove event listener to the SVG or container element
-  select('svg').on('mousemove', handleMouseMove)
 
   // Create a hovered data variable
   let hoveredData
@@ -166,55 +161,50 @@
 
 <!-- menus -->
 <h1 class="title_section">The Movie Ratings Conundrum</h1>
-<div class="intro_section">
-  <p>
-    Every time I am about to watch a film, I check the ratings online first. But there so many metrics available! <br />Do Rotten Tomatoes and IMDB ratings align? Do critics and
-    audience agree?
-    <br />
-    Let's conduct a test with the James Bond films.
-  </p>
-</div>
-<!-- scatterplot -->
-<div
-  class="chart_container"
-  on:mouseleave={() => {
-    hoveredData = null
-  }}>
-  <div class="axes_controller_section">
-    <div class="vertical_controller_section">
-      <p class="controller_text">Select the ratings on the left axis</p>
-      <select bind:value={axisYSelected} class="axisY_menu">
-        {#each axesOptions as axisYOption}
-          {#if axisYOption !== axisXSelected}
-            <option>{axisYOption}</option>
+<div class="grid_container">
+  <div class="left_column">
+    <div class="intro_section">
+      <p>
+        Every time I am about to watch a film, I check the ratings online. But there so many metrics available! <br />Do Rotten Tomatoes and IMDB ratings align? <br />Do critics
+        and audience agree?
+        <br />
+        Let's conduct a test with the James Bond films.
+      </p>
+    </div>
+    <div class="axes_controller_section">
+      <div class="vertical_controller_section">
+        <p class="controller_text">Select the ratings on the vertical axis</p>
+        <select bind:value={axisYSelected} class="axisY_menu">
+          {#each axesOptions as axisYOption}
+            {#if axisYOption !== axisXSelected}
+              <option>{axisYOption}</option>
+            {/if}
+          {/each}
+        </select>
+        {#each metricsData as metric}
+          {#if axisYSelected === metric.metric_label}
+            <p class="explanation_text">aka {metric.metric_name}: {metric.metric_short_explanation}</p>
           {/if}
         {/each}
-      </select>
-      {#each metricsData as metric}
-        {#if axisYSelected === metric.metric_label}
-          <p class="explanation_text">aka {metric.metric_name}: <br /> {metric.metric_short_explanation}</p>
-        {/if}
-      {/each}
-    </div>
+      </div>
 
-    <div class="horizontal_controller_section">
-      <p class="controller_text">right axis</p>
-      <select bind:value={axisXSelected} class="axisX_menu">
-        {#each axesOptions as axisXOption}
-          {#if axisXOption !== axisYSelected}
-            <option>{axisXOption}</option>
+      <div class="horizontal_controller_section">
+        <p class="controller_text">horizontal axis</p>
+        <select bind:value={axisXSelected} class="axisX_menu">
+          {#each axesOptions as axisXOption}
+            {#if axisXOption !== axisYSelected}
+              <option>{axisXOption}</option>
+            {/if}
+          {/each}
+        </select>
+        <!-- if axisXSelected corresponds, create a p with metric_name and short_explanation-->
+        {#each metricsData as metric}
+          {#if axisXSelected === metric.metric_label}
+            <p class="explanation_text">aka {metric.metric_name}: {metric.metric_short_explanation}</p>
           {/if}
         {/each}
-      </select>
-      <!-- if axisXSelected corresponds, create a p with metric_name and short_explanation-->
-      {#each metricsData as metric}
-        {#if axisXSelected === metric.metric_label}
-          <p class="explanation_text">aka {metric.metric_name}: <br />{metric.metric_short_explanation}</p>
-        {/if}
-      {/each}
+      </div>
     </div>
-  </div>
-  <div class="verdict_and_header_section">
     <!-- put an explanation of the alignement score-->
     <div class="verdict_section">
       {#if alignmentScore > 0.8}
@@ -226,187 +216,223 @@
       {/if}
       <p class="explanation_text explanation_verdict">Alignment Score (Pearson correlation): {alignmentScore.toFixed(2)}</p>
     </div>
+    <div class="film_selected_section">
+      <p class="controller_text"><br />Looking for a specific film?</p>
+      <select bind:value={filmSelected} class="filmSelected_menu">
+        {#each filmOptions as filmOption}
+          <option>{filmOption}</option>
+        {/each}
+      </select>
+      <div class="film_selected_text">
+        <button class="filmSelected_reset" on:click={() => (filmSelected = undefined)}>Reset</button>
+      </div>
+    </div>
+
+    <div class="footer_section">
+      <p class="footer_text">
+        Last update: November 2024 <br />
+        Sources: IMDB, Rotten Tomatoes, Wikipedia <br />
+        Author: Anne-Sophie Pereira De Sá | <a href="https://curiousdata.netlify.app/" target="_blank">Curious Data Website</a>
+      </p>
+    </div>
   </div>
-  <svg height="60%" width="60%" id="scatterplot" viewBox="0 0 610 610" preserveAspectRatio="xMidYMid meet" transform="rotate(-45) translate(225,225)">
-    <g transform="translate({margin.left}, {margin.top})">
-      <!-- add a square background but only on the space between the axis-->
-      <rect x="0" y="0" {width} {height} fill="var(--color-gray-950)" />
-      <!-- adding the axes -->
-      <g class="axisX"></g>
-      <g class="axisY"></g>
-      <!-- adding a diagonal line -->
-      <g class="diagonal_line">
-        <line x1={xScale(0)} y1={yScale(0)} x2={xScale(100)} y2={yScale(100)} />
-      </g>
-      <g>
-        <text y="180" x="290" text-anchor="middle" class="annotation_chart" transform="rotate(45)">↑ the higher, the more appreciated</text>
-      </g>
-      <g>
-        {#each metricsData as metric}
-          {#if axisYSelected === metric.metric_label}
-            <text y="0" text-anchor="middle" transform="rotate(45)" class="annotation_chart">
-              <tspan x="50" dy="1.2em" text-anchor="start">← more appreciated by </tspan>
-              <tspan x="50" dy="1.2em" text-anchor="start"> {metric.metric_label} </tspan>
-            </text>
-          {/if}
-        {/each}
-      </g>
-
-      <g>
-        {#each metricsData as metric}
-          {#if axisXSelected === metric.metric_label}
-            <text y="0" text-anchor="middle" transform="rotate(45)" class="annotation_chart">
-              <tspan x="550" dy="1.2em" text-anchor="end">→ more appreciated by </tspan>
-              <tspan x="550" dy="1.2em" text-anchor="end"> {metric.metric_label} </tspan>
-            </text>
-          {/if}
-        {/each}
-      </g>
-      <!-- add marks -->
-      <g class="inner-chart">
-        {#each data.sort((a, b) => a.axisXSelected - b.axisXSelected) as datum}
-          {@const cx = xScale(datum[axisXSelected])}
-          {@const cy = yScale(datum[axisYSelected])}
-          <circle
-            class="dot"
-            class:filmHighlighted={filmSelected === `${datum.title}, ${datum.year}`}
-            style:transform-origin={`${cx}px ${cy}px`}
-            {cx}
-            {cy}
-            r={hasDrawn ? 5 : 0}
-            fill={'var(--color-main)'}
-            on:mouseover={() => (hoveredData = datum)}
-            on:focus={() => (hoveredData = datum)}
-            tabIndex="0" />
-        {/each}
-      </g>
-    </g>
-  </svg>
-  {#if hoveredData}
-    <Tooltip data={hoveredData} {xScale} {yScale} {axisXSelected} {axisYSelected} {width} {xPosition} {yPosition} {height} />
-  {/if}
-
-  <div class="film_selected_section">
+  <div class="right_column">
     <div class="header_chart_section">
       <p class="explanation_text controller_text middle_text text_desktop">Each bubble is James Bond film. Hover for details</p>
       <p class="explanation_text controller_text middle_text middle_text text_mobile">Each bubble is a James Bond film. Click for details</p>
     </div>
-    <p class="controller_text search_text"><br />Looking for a specific film?</p>
-    <select bind:value={filmSelected} class="filmSelected_menu">
-      {#each filmOptions as filmOption}
-        <option>{filmOption}</option>
-      {/each}
-    </select>
-    <div class="film_selected_text">
-      <button class="filmSelected_reset" on:click={() => (filmSelected = undefined)}>Reset</button>
+
+    <!-- scatterplot -->
+    <div
+      class="chart_container"
+      on:mouseleave={() => {
+        hoveredData = null
+      }}>
+      <svg height="100%" width="100%" id="scatterplot" viewBox="0 0 500 500" preserveAspectRatio="xMidYMid meet">
+        <g transform="translate({margin.left}, {margin.top})">
+          <!-- add a square background but only on the space between the axis-->
+          <!-- <rect x="0" y="0" {width} {height} fill="var(--color-gray-950)" /> -->
+          <!-- adding the axes -->
+          <g class="axisX"></g>
+          <g class="axisY"></g>
+          <!-- adding a diagonal line -->
+          <g class="diagonal_line">
+            <line x1={xScale(0)} y1={yScale(0)} x2={xScale(100)} y2={yScale(100)} />
+          </g>
+          <g>
+            <text y="310" text-anchor="middle" class="annotation_chart" transform="rotate(-45)">
+              <tspan x="-285" dy="0.9em" text-anchor="start">equal</tspan>
+              <tspan x="-285" dy="1.1em" text-anchor="start">appreciation</tspan></text>
+          </g>
+
+          <g>
+            {#each metricsData as metric}
+              {#if axisYSelected === metric.metric_label}
+                <text x="10" y="15" text-anchor="start" class="annotation_title">
+                  {metric.metric_label}
+                </text>
+              {/if}
+            {/each}
+          </g>
+
+          <g>
+            {#each metricsData as metric}
+              {#if axisXSelected === metric.metric_label}
+                <text y="430" x="430" text-anchor="end" class="annotation_title">
+                  {metric.metric_label}
+                </text>
+              {/if}
+            {/each}
+          </g>
+
+          <g>
+            {#each metricsData as metric}
+              {#if axisYSelected === metric.metric_label}
+                <text x="15" y="150" text-anchor="middle" transform="rotate(-45)" class="annotation_chart"> ↑ more appreciated by {metric.metric_label} </text>
+              {/if}
+            {/each}
+          </g>
+
+          <g>
+            {#each metricsData as metric}
+              {#if axisXSelected === metric.metric_label}
+                <text x="15" y="470" text-anchor="middle" transform="rotate(-45)" class="annotation_chart"> ↓ more appreciated by {metric.metric_label} </text>
+              {/if}
+            {/each}
+          </g>
+          <!-- add marks -->
+          <g class="inner-chart">
+            {#each data.sort((a, b) => a.axisXSelected - b.axisXSelected) as datum}
+              {@const cx = xScale(datum[axisXSelected])}
+              {@const cy = yScale(datum[axisYSelected])}
+              <circle
+                class="dot"
+                class:filmHighlighted={filmSelected === `${datum.title}, ${datum.year}`}
+                style:transform-origin={`${cx}px ${cy}px`}
+                {cx}
+                {cy}
+                r={hasDrawn ? 5 : 0}
+                fill={'var(--color-main)'}
+                on:mouseover={() => (hoveredData = datum)}
+                on:focus={() => (hoveredData = datum)}
+                tabIndex="0" />
+            {/each}
+          </g>
+        </g>
+      </svg>
+      {#if hoveredData}
+        <Tooltip data={hoveredData} {xScale} {yScale} {axisXSelected} {axisYSelected} {width} {xPosition} {yPosition} {height} />
+      {/if}
     </div>
   </div>
-</div>
-
-<div class="footer_section">
-  <p class="footer_text">
-    November 2024 (data from May 2024)<br />
-    Sources: IMDB, Rotten Tomatoes, Wikipedia <br />
-    Author: Anne-Sophie Pereira De Sá | <a href="https://curiousdata.netlify.app/" target="_blank">Curious Data Website</a>
-  </p>
 </div>
 
 <!-- 
 TO DO in the future 
 1/ fix the tooltip position 
-2/ use stores (see video number 37)
+2/ flip the chart by -90 degrees ; see diamond github branch
+3/ break the code, use stores because this code is way too long(see video number 37)
   -->
 
 <style>
   .title_section {
     width: 100%;
     text-align: left;
-    margin-bottom: 0rem;
+    margin-bottom: 2rem;
   }
 
+  .grid_container {
+    display: flex;
+    flex-grow: 1;
+    gap: 0.7rem;
+    overflow: hidden;
+  }
+
+  .left_column {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    margin-right: 2rem;
+    height: 100%;
+    gap: 0.75rem;
+  }
+
+  .right_column {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    height: 100%;
+  }
   .intro_section {
-    /* margin-bottom: 2.5rem; */
+    margin-bottom: 1rem;
     /* text-wrap: balance; */
   }
 
   .intro_section p {
     color: var(--color-gray-300);
+    font-size: 0.8rem;
   }
 
-  .controller_text {
-    font-size: 0.8rem;
-    color: var(--color-gray-200);
-    margin-bottom: 0;
+  .vertical_controller_section,
+  .horizontal_controller_section,
+  .film_selected_section {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0rem;
   }
 
   .vertical_controller_section {
-    position: absolute;
-    top: 0; 
-    left: 0;
-    margin-top:2rem ;
+    margin-bottom: 0.75rem;
+  }
+  .controller_text {
+    font-size: 0.9rem;
+    color: var(--color-gray-200);
+    margin-bottom: 0.2rem;
   }
 
-  .horizontal_controller_section {
-    position: absolute;
-    top: 0;
-    right: 0;
-    margin-top:2rem ;
+  .footer_section {
+    margin-top: auto; /* This pushes the footer to the bottom */
   }
-
-  .axisY_menu,
-  .axisX_menu,
-  .filmSelected_menu {
-    border: 3px solid var(--color-gray-50);
-    border-radius: 0.25rem;
-    font-size: 0.8rem;
-  }
-
-  .verdict_and_header_section {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-  }
-
-  .film_selected_section {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    /* z-index: 10; Optional: Ensure it appears above other content */
-  }
-
-  .header_chart_section p {
-    text-align: left;
+  .footer_text {
+    font-size: 0.7rem;
+    color: var(--color-gray-400);
   }
 
   .verdict_section {
+    margin: 0 0;
     padding: 0.5rem 1rem;
     background-color: var(--color-main);
     border-radius: 0.25rem;
-    width: 50%;
   }
   .verdict_text {
     margin-bottom: 0;
     color: var(--color-gray-950);
   }
+
   .explanation_text {
     font-size: 0.7rem;
     color: var(--color-gray-400);
     margin-bottom: 0;
-    margin-top: 0.25rem;
+    margin-top: 0;
     font-style: italic;
   }
 
   .explanation_verdict {
-    color: var(--color-gray-600);
+    color: var(--color-gray-700);
   }
 
-  .search_text {
-    color: var(--color-gray-400);
+  .axisY_menu,
+  .axisX_menu,
+  .filmSelected_menu {
+    font-size: 0.8rem;
+    border: 3px solid var(--color-gray-50);
+    border-radius: 0.25rem;
   }
 
   .filmSelected_menu {
-    background-color: var(--color-gray-400);
-    border-color: var(--color-gray-400);
+    background-color: var(--color-gray-300);
+    border-color: var(--color-gray-300);
   }
 
   .filmSelected_reset {
@@ -415,7 +441,7 @@ TO DO in the future
     font-size: 0.8rem;
     border: 1px solid var(--color-gray-300);
     border-radius: 0.25rem;
-    background-color: var(--color-gray-300);
+    background-color: var(--color-gray-100);
     cursor: pointer;
   }
 
@@ -425,16 +451,6 @@ TO DO in the future
     justify-content: space-between;
   }
 
-  .footer_section {
-    margin-top: 2rem;
-    display: block;
-  }
-  .footer_text {
-    font-size: 0.6rem;
-    color: var(--color-gray-400);
-    text-align: center;
-  }
-
   .chart_container {
     position: relative;
     flex-grow: 1;
@@ -442,8 +458,62 @@ TO DO in the future
     overflow: hidden;
   }
 
+  .header_chart_section {
+    /* Add styles to ensure proper sizing if needed */
+    flex-shrink: 0; /* Prevents this section from shrinking */
+  }
+  .header_chart_section p {
+    text-align: center;
+  }
+
   .text_mobile {
     display: none;
+  }
+
+  @media screen and (min-width: 1500px) {
+    .footer_section {
+      margin-top: 2rem;
+    }
+
+    #scatterplot {
+      height: auto;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .grid_container {
+      flex-direction: column;
+      overflow-y: auto;
+    }
+
+    .left_column {
+      gap: 0rem;
+      margin-right: 0rem;
+    }
+    .left_column,
+    .right_column {
+      width: 100%;
+    }
+    .film_selected_section {
+      order: 1;
+    }
+
+    .verdict_section {
+      order: 2;
+      margin-top:1rem;
+      margin-bottom: 2rem;
+    }
+
+    .footer_section {
+      display: none;
+    }
+    .text_mobile {
+      display: block;
+    }
+
+    .text_desktop {
+      display: none;
+    }
   }
 
   /* Chart styles */
@@ -477,6 +547,11 @@ TO DO in the future
     outline: none;
   }
 
+  .annotation_title {
+    font-size: 0.7rem;
+    fill: var(--color-gray-200);
+  }
+
   .annotation_chart {
     font-size: 0.6rem;
     /* stroke: var(--color-gray-100); */
@@ -485,72 +560,12 @@ TO DO in the future
 
   .axisX,
   .axisY {
-    font-size: 0.55rem;
+    font-size: 0.5rem;
     color: var(--color-gray-500);
   }
 
   .diagonal_line {
     stroke: var(--color-gray-500);
     stroke-width: 0.5px;
-  }
-
-  :global(.axisX line, .axisY line) {
-    stroke: var(--color-gray-700);
-    stroke-opacity: 0.5;
-    /* stroke-dasharray: 1; */
-  }
-
-  :global(.axisX path, .axisY path) {
-    stroke: var(--color-gray-700);
-  }
-
-  @media screen and (max-width: 800px) {
-    .text_mobile {
-      display: block;
-    }
-    .text_desktop {
-      display: none;
-    }
-
-    .vertical_controller_section,
-    .horizontal_controller_section,
-    .verdict_and_header_section,
-    .film_selected_section {
-      position: relative;
-      width: 100%;
-    }
-
-    svg#scatterplot {
-      transform: none !important;
-      translate: none !important;
-      height: 100%;
-      width: 100%;
-    }
-    /* Update text transformations for mobile */
-    text.annotation_chart[transform*='rotate(45)'] {
-      transform: rotate(0deg);
-    }
-
-    /* Mobile-specific label positions */
-    g text[y='180'][x='290'] {
-      text-anchor: end;
-    }
-
-    /* Equal appreciation text */
-    g text[y='310'] tspan {
-      text-anchor: start;
-    }
-
-    /* Chart container adjustments */
-    .chart_container {
-      position: relative;
-      flex-grow: 1;
-      min-height: 0;
-      overflow: hidden;
-    }
-
-    :global(.axisX line, .axisY line) {
-      stroke: none;
-    }
   }
 </style>

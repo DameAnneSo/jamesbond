@@ -33,7 +33,7 @@ Variables
 
   /* fonts */
   --ff-primary: 'Oswald', sans-serif;
-  --ff-secondary: 'Merriweather', serif;
+  --ff-secondary: 'Lato', sans-serif;
 
   /* others */
   --transition: all 0.3s linear;
@@ -71,7 +71,7 @@ html {
   height: 100%;
   overflow-x: hidden;
   font-family: var(--ff-secondary);
-  line-height: 1.5;
+  line-height: 1.3;
 }
 
 a {
@@ -129,7 +129,7 @@ h6 {
   }
 
   p {
-    font-size: 0.8rem; /* 18px */
+    font-size: 0.9rem; /* 18px */
     color: var(--color-gray-100);
   }
 
@@ -169,11 +169,11 @@ h6 {
 
 p {
   margin-bottom: 1rem;
-  font-size: 0.8rem; /* 16px */
+  font-size: 0.9rem; /* 16px */
 }
 
 small {
-  font-size: 0.8rem; /* 12px */
+  font-size: 0.9rem; /* 12px */
 }
 }
 
@@ -184,6 +184,38 @@ Specific Styles
 */
 
 body {background-color: var(--color-gray-900);}
+
+.page-column {
+  margin: 0 auto;
+  width: 95%;
+  height: 100%;
+  max-width: 1200px; /* Limit maximum width for very large screens */
+  display: flex;
+  flex-direction: column;
+  /* overflow: hidden; */
+}
+  
+.footnote-container-mobile {
+  display:none}
+
+@media screen and (max-width: 768px)  {
+  .page-column {
+  overflow: visible;
+  height: auto; /* Allow the column to grow in height */
+    }
+
+    .footnote-container-mobile {
+  display:block;}
+
+    .footnote-text {
+    font-size: 0.7rem;
+    color: var(--color-gray-500);
+    margin-top: auto;
+    flex-shrink: 0;
+    /* align-self: end; */
+  }
+
+  }
 
 
 /*
