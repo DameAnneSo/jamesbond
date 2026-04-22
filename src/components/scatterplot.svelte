@@ -238,7 +238,7 @@
   </div>
   <div class="right_column">
     <div class="header_chart_section">
-      <p class="explanation_text controller_text middle_text text_desktop">Each bubble is James Bond film. Hover for details</p>
+      <p class="explanation_text controller_text middle_text text_desktop">Each bubble is a James Bond film. Hover for details</p>
       <p class="explanation_text controller_text middle_text middle_text text_mobile">Each bubble is a James Bond film. Click for details</p>
     </div>
 

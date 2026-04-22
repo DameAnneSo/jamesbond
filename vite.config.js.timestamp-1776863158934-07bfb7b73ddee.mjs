@@ -1,0 +1,16 @@
+// vite.config.js
+import { defineConfig } from "file:///Users/annperei/Library/CloudStorage/OneDrive-Microsoft/Documents/MY_DATAVIZ_CODE/jamesbond/node_modules/.pnpm/vite@4.5.5_terser@5.36.0/node_modules/vite/dist/node/index.js";
+import { svelte } from "file:///Users/annperei/Library/CloudStorage/OneDrive-Microsoft/Documents/MY_DATAVIZ_CODE/jamesbond/node_modules/.pnpm/@sveltejs+vite-plugin-svelte@2.5.3_svelte@3.59.2_vite@4.5.5_terser@5.36.0_/node_modules/@sveltejs/vite-plugin-svelte/src/index.js";
+import dsv from "file:///Users/annperei/Library/CloudStorage/OneDrive-Microsoft/Documents/MY_DATAVIZ_CODE/jamesbond/node_modules/.pnpm/@rollup+plugin-dsv@3.0.5_rollup@3.29.5/node_modules/@rollup/plugin-dsv/dist/es/index.js";
+var vite_config_default = defineConfig({
+  build: { outDir: "public" },
+  base: "./",
+  plugins: [dsv(), svelte({})],
+  server: {
+    port: 5e3
+  }
+});
+export {
+  vite_config_default as default
+};
+//# sourceMappingURL=data:application/json;base64,ewogICJ2ZXJzaW9uIjogMywKICAic291cmNlcyI6IFsidml0ZS5jb25maWcuanMiXSwKICAic291cmNlc0NvbnRlbnQiOiBbImNvbnN0IF9fdml0ZV9pbmplY3RlZF9vcmlnaW5hbF9kaXJuYW1lID0gXCIvVXNlcnMvYW5ucGVyZWkvTGlicmFyeS9DbG91ZFN0b3JhZ2UvT25lRHJpdmUtTWljcm9zb2Z0L0RvY3VtZW50cy9NWV9EQVRBVklaX0NPREUvamFtZXNib25kXCI7Y29uc3QgX192aXRlX2luamVjdGVkX29yaWdpbmFsX2ZpbGVuYW1lID0gXCIvVXNlcnMvYW5ucGVyZWkvTGlicmFyeS9DbG91ZFN0b3JhZ2UvT25lRHJpdmUtTWljcm9zb2Z0L0RvY3VtZW50cy9NWV9EQVRBVklaX0NPREUvamFtZXNib25kL3ZpdGUuY29uZmlnLmpzXCI7Y29uc3QgX192aXRlX2luamVjdGVkX29yaWdpbmFsX2ltcG9ydF9tZXRhX3VybCA9IFwiZmlsZTovLy9Vc2Vycy9hbm5wZXJlaS9MaWJyYXJ5L0Nsb3VkU3RvcmFnZS9PbmVEcml2ZS1NaWNyb3NvZnQvRG9jdW1lbnRzL01ZX0RBVEFWSVpfQ09ERS9qYW1lc2JvbmQvdml0ZS5jb25maWcuanNcIjtpbXBvcnQgeyBkZWZpbmVDb25maWcgfSBmcm9tICd2aXRlJ1xuaW1wb3J0IHsgc3ZlbHRlIH0gZnJvbSAnQHN2ZWx0ZWpzL3ZpdGUtcGx1Z2luLXN2ZWx0ZSdcbmltcG9ydCBkc3YgZnJvbSAnQHJvbGx1cC9wbHVnaW4tZHN2J1xuXG5leHBvcnQgZGVmYXVsdCBkZWZpbmVDb25maWcoe1xuICBidWlsZDogeyBvdXREaXI6ICdwdWJsaWMnIH0sXG4gIGJhc2U6ICcuLycsXG4gIHBsdWdpbnM6IFtkc3YoKSwgc3ZlbHRlKHt9KV0sXG4gIHNlcnZlcjoge1xuICAgIHBvcnQ6IDUwMDBcbiAgfVxufSlcbiJdLAogICJtYXBwaW5ncyI6ICI7QUFBbWMsU0FBUyxvQkFBb0I7QUFDaGUsU0FBUyxjQUFjO0FBQ3ZCLE9BQU8sU0FBUztBQUVoQixJQUFPLHNCQUFRLGFBQWE7QUFBQSxFQUMxQixPQUFPLEVBQUUsUUFBUSxTQUFTO0FBQUEsRUFDMUIsTUFBTTtBQUFBLEVBQ04sU0FBUyxDQUFDLElBQUksR0FBRyxPQUFPLENBQUMsQ0FBQyxDQUFDO0FBQUEsRUFDM0IsUUFBUTtBQUFBLElBQ04sTUFBTTtBQUFBLEVBQ1I7QUFDRixDQUFDOyIsCiAgIm5hbWVzIjogW10KfQo=
